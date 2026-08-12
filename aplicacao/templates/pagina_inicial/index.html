@@ -1,0 +1,368 @@
+{% extends 'layout/base.html' %}
+{% block title %}
+    Início | Doce Pedido
+{% endblock %}
+{% block description %}
+    Cupcakes artesanais, sabores especiais e kits para diferentes momentos.
+{% endblock %}
+{% block canonical %}
+    {{ url_publica_para('pagina_inicial.inicio') }}
+{% endblock %}
+{% block robots %}index, follow{% endblock %}
+{% block structured_data %}
+    {% set organization = {
+        '@context': 'https://schema.org',
+        '@type': 'Organization',
+        'name': informacoes_site.nome,
+        'url': url_publica_para('pagina_inicial.inicio'),
+        'logo': url_publica(url_for('static', filename='imagens/logo.png'))
+    } %}
+    {% if informacoes_site.email %}
+        {% set _ = organization.update({'email': informacoes_site.email}) %}
+    {% endif %}
+    {% if informacoes_site.telefone %}
+        {% set _ = organization.update({'telephone': informacoes_site.telefone}) %}
+    {% endif %}
+    {% if informacoes_site.endereco.logradouro and informacoes_site.endereco.cidade and informacoes_site.endereco.pais %}
+        {% set address = {
+            '@type': 'PostalAddress',
+            'streetAddress': informacoes_site.endereco.logradouro,
+            'addressLocality': informacoes_site.endereco.cidade,
+            'addressRegion': informacoes_site.endereco.estado,
+            'addressCountry': informacoes_site.endereco.pais
+        } %}
+        {% set _ = organization.update({'address': address}) %}
+    {% endif %}
+    {% set website = {
+        '@context': 'https://schema.org',
+        '@type': 'WebSite',
+        'name': informacoes_site.nome,
+        'url': url_publica_para('pagina_inicial.inicio'),
+        'inLanguage': informacoes_site.idioma
+    } %}
+    <script type="application/ld+json">
+        {{ [organization, website]|tojson }}
+    </script>
+{% endblock %}
+{% block content %}
+    {# Hero da página inicial #}
+    <section class="hero">
+        <div class="container">
+            <div class="row align-items-center g-5">
+                <div class="col-lg-6 hero-copy">
+                    <span class="eyebrow">
+                        Confeitaria Artesanal
+                    </span>
+                    <h1>
+                        Cupcakes para Diferentes Momentos
+                    </h1>
+                    <p>
+                        Sabores preparados com cuidado, ingredientes selecionados e uma apresentação especial.
+                    </p>
+                    <div class="hero-actions d-flex flex-wrap gap-2">
+                        <a class="btn btn-primary btn-lg" href="{{ url_for('produtos.catalogo') }}">
+                            Conhecer os Sabores
+                        </a>
+                        {% if kit %}
+                            <a
+                                class="btn btn-outline-secondary btn-lg"
+                                href="{{ url_for('produtos.detalhes', produto_id=kit.id) }}"
+                            >
+                                Ver os Kits
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="col-lg-6 hero-media">
+                    {% if destaques and imagem_produto_existe(destaques[0].imagem) %}
+                        <img
+                            class="hero-image"
+                            width="640"
+                            height="640"
+                            fetchpriority="high"
+                            src="{{ url_for('static', filename=destaques[0].imagem) }}"
+                            alt="{{ destaques[0].nome }} da Doce Pedido"
+                        >
+                    {% else %}
+                        <div class="image-placeholder hero-placeholder">
+                            Doce Pedido
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </section>
+    {# Produtos em destaque #}
+    <section class="section container favorites">
+        <div class="section-heading">
+            <div>
+                <span class="eyebrow">
+                    Mais Pedidos
+                </span>
+                <h2>
+                    Favoritos da Doce Pedido
+                </h2>
+            </div>
+            <a class="favorites-catalog-link" href="{{ url_for('produtos.catalogo') }}">
+                Ver Todos os Produtos
+            </a>
+        </div>
+        {# O viewport é a referência geométrica comum às duas setas e ao trilho rolável. #}
+        <div class="product-carousel-shell" data-product-carousel-shell>
+            <div class="product-carousel-viewport" data-product-carousel-viewport>
+                <button
+                    class="carousel-arrow carousel-arrow-previous"
+                    type="button"
+                    data-carousel-previous
+                    aria-label="Produtos anteriores"
+                    title="Produtos anteriores"
+                >
+                    <span aria-hidden="true">
+                        ‹
+                    </span>
+                </button>
+                <div
+                    class="product-carousel"
+                    data-product-carousel
+                    role="region"
+                    aria-label="Produtos em destaque"
+                    tabindex="0"
+                >
+                    {% for produto in destaques %}
+                        {% set card_home = true %}
+                        {% include 'produtos/_card.html' %}
+                    {% endfor %}
+                </div>
+                <button
+                    class="carousel-arrow carousel-arrow-next"
+                    type="button"
+                    data-carousel-next
+                    aria-label="Próximos produtos"
+                    title="Próximos produtos"
+                >
+                    <span aria-hidden="true">
+                        ›
+                    </span>
+                </button>
+            </div>
+        </div>
+    </section>
+    {# Kit com 6 Cupcakes #}
+    {% if kit %}
+        <section class="kit-section">
+            <div class="container">
+                <div class="kit-panel row g-0 align-items-center">
+                    <div class="col-lg-6">
+                        {% if imagem_produto_existe(kit.imagem) %}
+                            <img
+                                loading="lazy"
+                                decoding="async"
+                                width="640"
+                                height="640"
+                                src="{{ url_for('static', filename=kit.imagem) }}"
+                                alt="{{ kit.nome }}"
+                                class="kit-image"
+                            >
+                        {% else %}
+                            <div class="image-placeholder">
+                                Doce Pedido
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="col-lg-6 kit-copy">
+                        <span class="eyebrow">
+                            Para Dividir ou Presentear
+                        </span>
+                        <h2>
+                            Kit com 6 Cupcakes
+                        </h2>
+                        <p>
+                            Uma seleção com seis cupcakes para compartilhar, presentear ou aproveitar em grupo.
+                        </p>
+                        <strong class="product-price">
+                            {{ kit.preco_formatado }}
+                        </strong>
+                        <div class="d-flex flex-wrap align-items-stretch gap-2">
+                            <a
+                                class="btn btn-primary d-inline-flex align-items-center justify-content-center"
+                                href="{{ url_for('produtos.detalhes', produto_id=kit.id) }}"
+                            >
+                                Conhecer o Kit
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    {% endif %}
+    {# Nossa Essência #}
+    <section id="sobre" class="about-section container">
+        <div>
+            <span class="eyebrow">
+                Nossa Essência
+            </span>
+            <h2>
+                Cuidado em Cada Detalhe
+            </h2>
+        </div>
+        <p>
+            Na Doce Pedido, cada cupcake combina sabor, cuidado no preparo e uma apresentação especial.
+            Escolha seus favoritos e monte seu pedido de forma simples.
+        </p>
+        <a class="btn btn-outline-secondary" href="{{ url_for('institucional.sobre') }}">
+            Conhecer a Doce Pedido
+        </a>
+    </section>
+    <section class="benefits" aria-label="Benefícios da loja">
+        <div class="container benefits-grid">
+            <article class="benefit">
+                <svg
+                    class="benefit-icon"
+                    width="28"
+                    height="28"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                    aria-hidden="true"
+                    focusable="false"
+                >
+                    <path
+                        fill-rule="evenodd"
+                        clip-rule="evenodd"
+                        d="M8.69506 16.961C8.70931 17.8033 8.22553 18.5709 7.47078 18.9035C6.71603 19.236 5.84015 19.0675 5.25424 18.477C4.66833 17.8865 4.48871 16.9912 4.79969 16.2114C5.11066 15.4316 5.85049 14.9221 6.67193 14.922C7.20385 14.9172 7.71584 15.1293 8.09525 15.5117C8.47466 15.8941 8.69042 16.4154 8.69506 16.961Z"
+                        stroke="currentColor"
+                        stroke-width="1.5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                    >
+                    </path>
+                    <path
+                        fill-rule="evenodd"
+                        clip-rule="evenodd"
+                        d="M18.33 16.961C18.3443 17.8033 17.8605 18.5709 17.1057 18.9035C16.351 19.236 15.4751 19.0675 14.8892 18.477C14.3033 17.8865 14.1237 16.9912 14.4346 16.2114C14.7456 15.4316 15.4854 14.9221 16.3069 14.922C16.8388 14.9172 17.3508 15.1293 17.7302 15.5117C18.1096 15.8941 18.3254 16.4154 18.33 16.961Z"
+                        stroke="currentColor"
+                        stroke-width="1.5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                    >
+                    </path>
+                    <path
+                        fill-rule="evenodd"
+                        clip-rule="evenodd"
+                        d="M2.92499 8.75195V13.372H8.92904V8.75195H2.92499Z"
+                        stroke="currentColor"
+                        stroke-width="1.5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                    >
+                    </path>
+                    <path
+                        d="M14.0497 16.961H8.69504M14.0497 16.961H14.2876M14.0497 16.961V13.372M18.33 16.961C19.4669 16.961 20.475 15.999 20.475 14.761L19.9797 12.02M14.0497 7.628H17.4408C18.3937 7.58573 19.2628 8.24958 19.4785 9.221C19.5296 9.41214 19.5642 9.60807 19.5819 9.821L19.9797 12.02M14.0497 7.628V12.02M14.0497 7.628V5H6.61926V8.752M14.0497 12.02V13.372M14.0497 12.02H19.9797M4.64976 16.961H3.93606C3.66513 16.9649 3.40593 16.8584 3.22641 16.6709C3.03366 16.4784 2.92835 16.2181 2.92499 15.951V13.372H14.0497"
+                        stroke="currentColor"
+                        stroke-width="1.5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                    >
+                    </path>
+                </svg>
+                <div>
+                    <h2>
+                        Entrega Cuidadosa
+                    </h2>
+                    <p>
+                        Seu pedido preparado com atenção em cada etapa.
+                    </p>
+                </div>
+            </article>
+            <article class="benefit">
+                <svg
+                    class="benefit-icon"
+                    width="28"
+                    height="28"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                    aria-hidden="true"
+                    focusable="false"
+                >
+                    <path
+                        fill-rule="evenodd"
+                        clip-rule="evenodd"
+                        d="M12 6.00019C10.2006 3.90317 7.19377 3.2551 4.93923 5.17534C2.68468 7.09558 2.36727 10.3061 4.13778 12.5772C5.60984 14.4654 10.0648 18.4479 11.5249 19.7369C11.6882 19.8811 11.7699 19.9532 11.8652 19.9815C11.9483 20.0062 12.0393 20.0062 12.1225 19.9815C12.2178 19.9532 12.2994 19.8811 12.4628 19.7369C13.9229 18.4479 18.3778 14.4654 19.8499 12.5772C21.6204 10.3061 21.3417 7.07538 19.0484 5.17534C16.7551 3.2753 13.7994 3.90317 12 6.00019Z"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                    >
+                    </path>
+                </svg>
+                <div>
+                    <h2>
+                        Produção Artesanal
+                    </h2>
+                    <p>
+                        Cupcakes preparados com cuidado no sabor e nos detalhes.
+                    </p>
+                </div>
+            </article>
+            <article class="benefit">
+                <svg
+                    class="benefit-icon"
+                    width="28"
+                    height="28"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                    aria-hidden="true"
+                    focusable="false"
+                >
+                    <path
+                        d="M11.302 21.6149C11.5234 21.744 11.6341 21.8086 11.7903 21.8421C11.9116 21.8681 12.0884 21.8681 12.2097 21.8421C12.3659 21.8086 12.4766 21.744 12.698 21.6149C14.646 20.4784 20 16.9084 20 12V6.6C20 6.04207 20 5.7631 19.8926 5.55048C19.7974 5.36198 19.6487 5.21152 19.4613 5.11409C19.25 5.00419 18.9663 5.00084 18.3988 4.99413C15.4272 4.95899 13.7136 4.71361 12 3C10.2864 4.71361 8.57279 4.95899 5.6012 4.99413C5.03373 5.00084 4.74999 5.00419 4.53865 5.11409C4.35129 5.21152 4.20259 5.36198 4.10739 5.55048C4 5.7631 4 6.04207 4 6.6V12C4 16.9084 9.35396 20.4784 11.302 21.6149Z"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                    >
+                    </path>
+                </svg>
+                <div>
+                    <h2>
+                        Pedido Acompanhado
+                    </h2>
+                    <p>
+                        Consulte a situação e os detalhes dos pedidos pela sua conta.
+                    </p>
+                </div>
+            </article>
+            <article class="benefit">
+                <svg
+                    class="benefit-icon"
+                    width="28"
+                    height="28"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                    aria-hidden="true"
+                    focusable="false"
+                >
+                    <path
+                        d="M12 7V20M12 7H8.46429C7.94332 7 7.4437 6.78929 7.07533 6.41421C6.70695 6.03914 6.5 5.53043 6.5 5C6.5 4.46957 6.70695 3.96086 7.07533 3.58579C7.4437 3.21071 7.94332 3 8.46429 3C11.2143 3 12 7 12 7ZM12 7H15.5357C16.0567 7 16.5563 6.78929 16.9247 6.41421C17.293 6.03914 17.5 5.53043 17.5 5C17.5 4.46957 17.293 3.96086 16.9247 3.58579C16.5563 3.21071 16.0567 3 15.5357 3C12.7857 3 12 7 12 7ZM5 12H19V17.8C19 18.9201 19 19.4802 18.782 19.908C18.5903 20.2843 18.2843 20.5903 17.908 20.782C17.4802 21 16.9201 21 15.8 21H8.2C7.07989 21 6.51984 21 6.09202 20.782C5.71569 20.5903 5.40973 20.2843 5.21799 19.908C5 19.4802 5 18.9201 5 17.8V12ZM4.6 12H19.4C19.9601 12 20.2401 12 20.454 11.891C20.6422 11.7951 20.7951 11.6422 20.891 11.454C21 11.2401 21 10.9601 21 10.4V8.6C21 8.03995 21 7.75992 20.891 7.54601C20.7951 7.35785 20.6422 7.20487 20.454 7.10899C20.2401 7 19.9601 7 19.4 7H4.6C4.03995 7 3.75992 7 3.54601 7.10899C3 7.75992 3 8.03995 3 8.6V10.4C3 10.9601 3 11.2401 3.10899 11.454C3.20487 11.6422 3.35785 11.7951 3.54601 11.891C3.75992 12 4.03995 12 4.6 12Z"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                    >
+                    </path>
+                </svg>
+                <div>
+                    <h2>
+                        Opções para Compartilhar
+                    </h2>
+                    <p>
+                        Produtos individuais e kits para diferentes momentos.
+                    </p>
+                </div>
+            </article>
+        </div>
+    </section>
+{% endblock %}

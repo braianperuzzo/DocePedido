@@ -1,0 +1,131 @@
+{% extends 'layout/base.html' %}
+{% block title %}
+    Cupcakes e Kits | Doce Pedido
+{% endblock %}
+{% block description %}
+    Conheça o catálogo da Doce Pedido, com cupcakes artesanais em sabores clássicos, especiais e
+    kits para compartilhar.
+{% endblock %}
+{% block canonical %}
+    {{ url_publica_para('produtos.catalogo') }}
+{% endblock %}
+{% block robots %}index, follow{% endblock %}
+{% block content %}
+    <header class="page-header">
+        <div class="container">
+            <span class="eyebrow">
+                Sabores para Todos os Momentos
+            </span>
+            <h1>
+                Nosso Catálogo
+            </h1>
+            <p>
+                Encontre o cupcake que você procura ou escolha um kit para compartilhar.
+            </p>
+        </div>
+    </header>
+    <section class="container catalog-section">
+        <button
+            class="btn btn-outline-secondary filter-toggle"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#catalog-filters"
+            aria-expanded="false"
+            aria-controls="catalog-filters"
+        >
+            <span>
+                Filtros
+            </span>
+            <svg class="filter-toggle-icon" viewBox="0 0 24 24" aria-hidden="true" width="20" height="20">
+                <path d="m6 9 6 6 6-6"/>
+            </svg>
+        </button>
+        <form
+            id="catalog-filters"
+            class="catalog-filters collapse"
+            method="get"
+            action="{{ url_for('produtos.catalogo') }}"
+        >
+            <label>
+                Busca
+                <input class="form-control" type="search" name="q" value="{{ filtros.q }}" placeholder="Nome ou Sabor">
+            </label>
+            <label>
+                Categoria
+                <select class="form-select" name="categoria">
+                    <option value="">
+                        Todas
+                    </option>
+                    {% for valor, rotulo in [
+                        ('tradicionais', 'Tradicionais'),
+                        ('especiais', 'Especiais'),
+                        ('kits', 'Kits')
+                    ] %}
+                        <option value="{{ valor }}" {% if filtros.categoria == valor %}selected{% endif %}>
+                            {{ rotulo }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </label>
+            <label>
+                Disponibilidade
+                <select class="form-select" name="disponibilidade">
+                    <option value="">
+                        Todos
+                    </option>
+                    <option value="disponivel" {% if filtros.disponibilidade == 'disponivel' %}selected{% endif %}>
+                        Disponíveis
+                    </option>
+                </select>
+            </label>
+            <label>
+                Ordenar por
+                <select class="form-select" name="ordem">
+                    <option value="">
+                        Relevância
+                    </option>
+                    <option value="nome_asc" {% if filtros.ordem == 'nome_asc' %}selected{% endif %}>
+                        Nome A–Z
+                    </option>
+                    <option value="nome_desc" {% if filtros.ordem == 'nome_desc' %}selected{% endif %}>
+                        Nome Z–A
+                    </option>
+                    <option value="preco_asc" {% if filtros.ordem == 'preco_asc' %}selected{% endif %}>
+                        Menor preço
+                    </option>
+                    <option value="preco_desc" {% if filtros.ordem == 'preco_desc' %}selected{% endif %}>
+                        Maior preço
+                    </option>
+                </select>
+            </label>
+            <button class="btn btn-primary" type="submit">
+                Aplicar
+            </button>
+            {% if filtros.categoria or filtros.disponibilidade or filtros.ordem or filtros.q %}
+                <a class="clear-filters" href="{{ url_for('produtos.catalogo') }}">
+                    Limpar filtros
+                </a>
+            {% endif %}
+        </form>
+        <p class="result-count">
+            {% include 'produtos/_result_count.html' %}
+        </p>
+        <div class="catalog-grid products-grid">
+            {% for produto in produtos %}
+                {% include 'produtos/_card.html' %}
+            {% else %}
+                <div class="empty-state">
+                    <h2>
+                        Nenhum Produto Encontrado
+                    </h2>
+                    <p>
+                        Ajuste os filtros ou limpe a busca para ver todo o catálogo.
+                    </p>
+                    <a class="btn btn-primary" href="{{ url_for('produtos.catalogo') }}">
+                        Limpar filtros
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+    </section>
+{% endblock %}

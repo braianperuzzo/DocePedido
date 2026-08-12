@@ -1,0 +1,20 @@
+{% extends "emails/base_email.html" %}
+
+{% block titulo_oculto %}Código de Acesso - Doce Pedido{% endblock %}
+{% block titulo %}Validar Dispositivo{% endblock %}
+{% block conteudo %}
+    <p>Olá, <strong style="color:#94435f;">{{ nome }}</strong>,</p>
+    <p>
+        Identificamos um acesso em um dispositivo que ainda não foi validado na
+        <strong>Doce Pedido</strong>. Use o código abaixo para continuar.
+    </p>
+    <p style="text-align:center;margin:32px 0;font-size:32px;font-weight:bold;letter-spacing:8px;color:#94435f;">
+        {{ codigo }}
+    </p>
+    <p style="text-align:center;font-size:13px;color:#78625e;">
+        O código expira em {{ minutos }} minutos.
+    </p>
+    <p style="margin-top:24px;">
+        Se você não tentou acessar sua conta, ignore este e-mail. Não informe este código a outras pessoas.
+    </p>
+{% endblock %}

@@ -1,0 +1,230 @@
+{% extends 'layout/base.html' %}
+
+{% macro icone_pessoa() %}
+    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 14 14" aria-hidden="true" focusable="false">
+        <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0Zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4Zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10Z"></path>
+    </svg>
+{% endmacro %}
+
+{% macro icone_cadeado() %}
+    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 13.216 15.419" fill="currentColor" aria-hidden="true" focusable="false">
+        <path transform="translate(-4 -2)" d="M15.564,6.956h-1.1V5.3a3.3,3.3,0,0,0-3.3-3.3h-1.1a3.3,3.3,0,0,0-3.3,3.3V6.956h-1.1A1.652,1.652,0,0,0,4,8.608v7.159a1.652,1.652,0,0,0,1.652,1.652h9.912a1.652,1.652,0,0,0,1.652-1.652V8.608a1.652,1.652,0,0,0-1.652-1.652ZM7.855,5.3a2.2,2.2,0,0,1,2.2-2.2h1.1a2.2,2.2,0,0,1,2.2,2.2V6.956H7.855Zm8.26,10.463a.551.551,0,0,1-.551.551H5.652a.551.551,0,0,1-.551-.551V8.608a.551.551,0,0,1,.551-.551h9.912a.551.551,0,0,1,.551.551Zm-4.956-2.2v1.1a.551.551,0,1,1-1.1,0v-1.1a.551.551,0,0,1,1.1,0Z"></path>
+    </svg>
+{% endmacro %}
+
+{% macro icone_lixeira() %}
+    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
+        <path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13M10 11v5M14 11v5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+    </svg>
+{% endmacro %}
+
+{% macro botao_olho(campo) %}
+    <button class="profile-password-toggle" type="button" data-profile-password-toggle="{{ campo }}" aria-label="Mostrar Senha">
+        <span data-profile-eye-open aria-hidden="true">
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" focusable="false">
+                <path d="M15.0007 12C15.0007 13.6569 13.6576 15 12.0007 15C10.3439 15 9.00073 13.6569 9.00073 12C9.00073 10.3431 10.3439 9 12.0007 9C13.6576 9 15.0007 10.3431 15.0007 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                <path d="M12.0012 5C7.52354 5 3.73326 7.94288 2.45898 12C3.73324 16.0571 7.52354 19 12.0012 19C16.4788 19 20.2691 16.0571 21.5434 12C20.2691 7.94291 16.4788 5 12.0012 5Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+            </svg>
+        </span>
+        <span data-profile-eye-closed aria-hidden="true" hidden>
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" focusable="false">
+                <path d="M2.99902 3L20.999 21M9.8433 9.91364C9.32066 10.4536 8.99902 11.1892 8.99902 12C8.99902 13.6569 10.3422 15 11.999 15C12.8215 15 13.5667 14.669 14.1086 14.133M6.49902 6.64715C4.59972 7.90034 3.15305 9.78394 2.45703 12C3.73128 16.0571 7.52159 19 11.9992 19C13.9881 19 15.8414 18.4194 17.3988 17.4184M10.999 5.04939C11.328 5.01673 11.6617 5 11.9992 5C16.4769 5 20.2672 7.94291 21.5414 12C21.2607 12.894 20.8577 13.7338 20.3522 14.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+            </svg>
+        </span>
+    </button>
+{% endmacro %}
+
+{% block title %}Minha Conta | Doce Pedido{% endblock %}
+{% block description %}Consulte e gerencie os dados da sua conta Doce Pedido.{% endblock %}
+
+{% block structured_data %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/conta.css') }}">
+{% endblock %}
+
+{% block content %}
+    <section class="container section profile-account-page" data-profile-account>
+        <div class="profile-account-heading">
+            <div>
+                <span class="eyebrow">Área do Cliente</span>
+                <h1>Minha Conta</h1>
+                <p>Gerencie seus dados e sua senha.</p>
+            </div>
+            <a class="btn btn-outline-secondary" href="{{ url_for('pedidos.listar') }}">Meus Pedidos</a>
+        </div>
+
+        {% set pagina_conta = 'dados' %}
+        {% include 'conta/_nav.html' %}
+
+        <div class="profile-account-grid">
+            <section class="profile-account-card profile-account-card-main" aria-labelledby="titulo-meus-dados">
+                <div class="profile-account-card-header">
+                    <span class="profile-account-card-icon">{{ icone_pessoa() }}</span>
+                    <div>
+                        <span class="eyebrow">Cadastro</span>
+                        <h2 id="titulo-meus-dados">Meus Dados</h2>
+                    </div>
+                </div>
+
+                <dl class="profile-account-data">
+                    <div><dt>Nome</dt><dd>{{ current_user.nome }}</dd></div>
+                    <div><dt>E-mail</dt><dd>{{ current_user.email }}</dd></div>
+                    <div><dt>CPF</dt><dd>{{ cpf_formatado }}</dd></div>
+                    <div><dt>Celular</dt><dd>{{ telefone_formatado }}</dd></div>
+                </dl>
+
+                <div class="profile-account-actions">
+                    <button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#modal-editar-dados">Editar Dados</button>
+                </div>
+            </section>
+
+            <div class="profile-account-side">
+                <section class="profile-account-card" aria-labelledby="titulo-seguranca">
+                    <div class="profile-account-card-header">
+                        <span class="profile-account-card-icon">{{ icone_cadeado() }}</span>
+                        <div>
+                            <span class="eyebrow">Segurança</span>
+                            <h2 id="titulo-seguranca">Senha</h2>
+                        </div>
+                    </div>
+                    <button class="btn btn-outline-secondary" type="button" data-bs-toggle="modal" data-bs-target="#modal-alterar-senha">Alterar Senha</button>
+                </section>
+
+                <section class="profile-account-card profile-account-danger-card" aria-labelledby="titulo-excluir-conta">
+                    <div class="profile-account-card-header">
+                        <span class="profile-account-card-icon text-danger">{{ icone_lixeira() }}</span>
+                        <div>
+                            <span class="eyebrow">Conta</span>
+                            <h2 id="titulo-excluir-conta">Excluir Conta</h2>
+                        </div>
+                    </div>
+                    <p>A exclusão só acontece depois da confirmação enviada por e-mail.</p>
+                    <button class="btn btn-outline-secondary profile-danger-button d-inline-flex align-items-center gap-2" type="button" data-bs-toggle="modal" data-bs-target="#modal-excluir-conta">
+                        <span class="profile-danger-icon">{{ icone_lixeira() }}</span>
+                        <span>Excluir Conta</span>
+                    </button>
+                </section>
+            </div>
+        </div>
+    </section>
+
+    <div class="modal fade" id="modal-editar-dados" tabindex="-1" aria-labelledby="titulo-modal-editar-dados" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable profile-account-modal-dialog">
+            <div class="modal-content profile-account-modal">
+                <div class="modal-header">
+                    <div><span class="eyebrow">Meus Dados</span><h2 class="modal-title" id="titulo-modal-editar-dados">Editar Dados</h2></div>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                </div>
+                <form class="profile-account-modal-form" method="post" action="{{ url_for('conta.solicitar_dados') }}">
+                    <div class="modal-body">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                        <div class="form-floating mb-3">
+                            <input class="form-control" id="perfil-nome" name="nome" type="text" maxlength="120" autocomplete="name" value="{{ current_user.nome }}" placeholder="Seu Nome" required>
+                            <label for="perfil-nome">Nome</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input class="form-control" id="perfil-email" name="email" type="email" maxlength="255" autocomplete="email" value="{{ current_user.email }}" placeholder="exemplo@exemplo.com.br" required>
+                            <label for="perfil-email">E-mail</label>
+                        </div>
+                        <div class="row g-3">
+                            <div class="col-sm-6">
+                                <div class="form-floating">
+                                    <input class="form-control" id="perfil-cpf" type="text" value="{{ cpf_formatado if current_user.cpf else '' }}" placeholder="000.000.000-00" aria-describedby="perfil-cpf-ajuda" disabled>
+                                    <label for="perfil-cpf">CPF</label>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-floating">
+                                    <input class="form-control" id="perfil-telefone" name="telefone" type="tel" inputmode="tel" maxlength="15" autocomplete="tel" value="{% if current_user.telefone and telefone_formatado != 'Não informado' %}{{ telefone_formatado }}{% endif %}" placeholder="(00) 00000.0000" data-cellphone-input>
+                                    <label for="perfil-telefone">Celular</label>
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="form-floating profile-password-field">
+                            <input class="form-control" id="perfil-senha-atual" name="senha_atual" type="password" autocomplete="current-password" placeholder="Senha Atual" required>
+                            <label for="perfil-senha-atual">Senha Atual para Confirmar</label>
+                            {{ botao_olho('perfil-senha-atual') }}
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Confirmar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modal-alterar-senha" tabindex="-1" aria-labelledby="titulo-modal-alterar-senha" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable profile-account-modal-dialog">
+            <div class="modal-content profile-account-modal">
+                <div class="modal-header">
+                    <div><span class="eyebrow">Segurança</span><h2 class="modal-title" id="titulo-modal-alterar-senha">Alterar Senha</h2></div>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                </div>
+                <form class="profile-account-modal-form" method="post" action="{{ url_for('conta.solicitar_senha') }}">
+                    <div class="modal-body">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                        <div class="form-floating profile-password-field mb-3">
+                            <input class="form-control" id="senha-atual" name="senha_atual" type="password" autocomplete="current-password" placeholder="Senha Atual" required>
+                            <label for="senha-atual">Senha Atual</label>
+                            {{ botao_olho('senha-atual') }}
+                        </div>
+                        <div class="form-floating profile-password-field mb-3">
+                            <input class="form-control" id="nova-senha" name="nova_senha" type="password" autocomplete="new-password" aria-describedby="requisitos-nova-senha" placeholder="Nova Senha" required>
+                            <label for="nova-senha">Nova Senha</label>
+                            {{ botao_olho('nova-senha') }}
+                        </div>
+                        <div id="requisitos-nova-senha" class="profile-password-rules" aria-live="polite" data-profile-password-criteria hidden>
+                            <strong>A Nova Senha Deve Conter:</strong>
+                            <ul>
+                                <li data-profile-password-rule="length">✕ Mínimo de 8 Caracteres</li>
+                                <li data-profile-password-rule="upper">✕ Uma Letra Maiúscula</li>
+                                <li data-profile-password-rule="lower">✕ Uma Letra Minúscula</li>
+                                <li data-profile-password-rule="number">✕ Um Número</li>
+                                <li data-profile-password-rule="special">✕ Um Caractere Especial</li>
+                            </ul>
+                        </div>
+                        <div class="form-floating profile-password-field mt-3">
+                            <input class="form-control" id="confirmacao-nova-senha" name="confirmacao_nova_senha" type="password" autocomplete="new-password" aria-describedby="confirmacao-nova-senha-mensagem" placeholder="Repita a Nova Senha" required>
+                            <label for="confirmacao-nova-senha">Repita a Nova Senha</label>
+                            {{ botao_olho('confirmacao-nova-senha') }}
+                        </div>
+                        <p id="confirmacao-nova-senha-mensagem" class="profile-password-match" aria-live="polite" data-profile-password-match></p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Confirmar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modal-excluir-conta" tabindex="-1" aria-labelledby="titulo-modal-excluir-conta" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content profile-account-modal">
+                <div class="modal-header">
+                    <div><span class="eyebrow">Confirmação</span><h2 class="modal-title" id="titulo-modal-excluir-conta">Excluir Sua Conta?</h2></div>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Vamos enviar um e-mail para {{ current_user.email }}. A conta só será excluída depois que você confirmar pelo link recebido.</p>
+                    <p class="mb-0">Se não confirmar o e-mail, nada será excluído.</p>
+                </div>
+                <form method="post" action="{{ url_for('conta.solicitar_exclusao') }}">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-outline-secondary profile-danger-button d-inline-flex align-items-center gap-2">
+                            <span class="profile-danger-icon">{{ icone_lixeira() }}</span>
+                            <span>Excluir</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script defer src="{{ url_for('static', filename='js/conta-perfil.js') }}"></script>
+{% endblock %}

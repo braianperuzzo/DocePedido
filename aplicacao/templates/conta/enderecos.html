@@ -1,0 +1,359 @@
+{% extends 'layout/base.html' %}
+
+{% macro formulario_endereco(endereco=none, acao='') %}
+    <form class="address-form" method="post" action="{{ acao }}" data-address-form>
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+        <div class="row g-2 address-form-grid-compact">
+            <div class="col-md-6">
+                <div class="form-floating address-floating-field">
+                    <input
+                        class="form-control"
+                        id="endereco-nome-{{ endereco.id if endereco else 'novo' }}"
+                        name="nome"
+                        type="text"
+                        maxlength="60"
+                        value="{{ endereco.nome if endereco else '' }}"
+                        placeholder="Casa"
+                        autocomplete="off"
+                        required
+                    >
+                    <label for="endereco-nome-{{ endereco.id if endereco else 'novo' }}">Apelido do Endereço</label>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="address-cep-row">
+                    <div class="form-floating address-floating-field">
+                        <input
+                            class="form-control"
+                            id="endereco-cep-{{ endereco.id if endereco else 'novo' }}"
+                            name="cep"
+                            type="text"
+                            inputmode="numeric"
+                            maxlength="9"
+                            value="{{ endereco.cep_formatado if endereco else '' }}"
+                            placeholder="00000-000"
+                            autocomplete="postal-code"
+                            data-cep-input
+                            required
+                        >
+                        <label for="endereco-cep-{{ endereco.id if endereco else 'novo' }}">CEP</label>
+                    </div>
+                    <button class="btn btn-outline-secondary address-cep-button" type="button" data-cep-lookup>
+                        Buscar CEP
+                    </button>
+                </div>
+                <small class="address-cep-feedback" data-cep-feedback aria-live="polite"></small>
+            </div>
+
+            <div class="col-md-8">
+                <div class="form-floating address-floating-field">
+                    <input
+                        class="form-control"
+                        id="endereco-logradouro-{{ endereco.id if endereco else 'novo' }}"
+                        name="logradouro"
+                        type="text"
+                        maxlength="160"
+                        value="{{ endereco.logradouro if endereco else '' }}"
+                        placeholder="Rua ou avenida"
+                        autocomplete="address-line1"
+                        required
+                    >
+                    <label for="endereco-logradouro-{{ endereco.id if endereco else 'novo' }}">Rua / Avenida</label>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="form-floating address-floating-field">
+                    <input
+                        class="form-control"
+                        id="endereco-numero-{{ endereco.id if endereco else 'novo' }}"
+                        name="numero"
+                        type="text"
+                        maxlength="20"
+                        value="{{ endereco.numero if endereco else '' }}"
+                        placeholder="Número"
+                        autocomplete="address-line2"
+                        required
+                    >
+                    <label for="endereco-numero-{{ endereco.id if endereco else 'novo' }}">Número</label>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-floating address-floating-field">
+                    <input
+                        class="form-control"
+                        id="endereco-complemento-{{ endereco.id if endereco else 'novo' }}"
+                        name="complemento"
+                        type="text"
+                        maxlength="100"
+                        value="{{ (endereco.complemento or '') if endereco else '' }}"
+                        placeholder="Apto, bloco, sala"
+                        autocomplete="address-line2"
+                    >
+                    <label for="endereco-complemento-{{ endereco.id if endereco else 'novo' }}">Complemento</label>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-floating address-floating-field">
+                    <input
+                        class="form-control"
+                        id="endereco-bairro-{{ endereco.id if endereco else 'novo' }}"
+                        name="bairro"
+                        type="text"
+                        maxlength="100"
+                        value="{{ endereco.bairro if endereco else '' }}"
+                        placeholder="Bairro"
+                        required
+                    >
+                    <label for="endereco-bairro-{{ endereco.id if endereco else 'novo' }}">Bairro</label>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="form-floating address-floating-field">
+                    <select
+                        class="form-select"
+                        id="endereco-uf-{{ endereco.id if endereco else 'novo' }}"
+                        name="uf"
+                        autocomplete="address-level1"
+                        data-address-uf
+                        data-selected-value="{{ endereco.uf if endereco else '' }}"
+                        required
+                    >
+                        <option value="">Selecione</option>
+                        {% if endereco and endereco.uf %}
+                            <option value="{{ endereco.uf }}" selected>{{ endereco.uf }}</option>
+                        {% endif %}
+                    </select>
+                    <label for="endereco-uf-{{ endereco.id if endereco else 'novo' }}">UF</label>
+                </div>
+            </div>
+
+            <div
+                class="col-md-8"
+                data-address-city-field
+                {% if not endereco or not endereco.uf %}hidden{% endif %}
+            >
+                <div class="form-floating address-floating-field">
+                    <select
+                        class="form-select"
+                        id="endereco-cidade-{{ endereco.id if endereco else 'novo' }}"
+                        name="cidade"
+                        autocomplete="address-level2"
+                        data-address-city
+                        data-selected-value="{{ endereco.cidade if endereco else '' }}"
+                        {% if not endereco or not endereco.uf %}disabled{% endif %}
+                        required
+                    >
+                        <option value="">Selecione a cidade</option>
+                        {% if endereco and endereco.cidade %}
+                            <option value="{{ endereco.cidade }}" selected>{{ endereco.cidade }}</option>
+                        {% endif %}
+                    </select>
+                    <label for="endereco-cidade-{{ endereco.id if endereco else 'novo' }}">Cidade</label>
+                </div>
+            </div>
+
+            <div class="col-12">
+                <div class="form-floating address-floating-field">
+                    <input
+                        class="form-control"
+                        id="endereco-referencia-{{ endereco.id if endereco else 'novo' }}"
+                        name="referencia"
+                        type="text"
+                        maxlength="180"
+                        value="{{ (endereco.referencia or '') if endereco else '' }}"
+                        placeholder="Ponto de Referência"
+                    >
+                    <label for="endereco-referencia-{{ endereco.id if endereco else 'novo' }}">Ponto de Referência</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="address-form-footer">
+            <label class="address-primary-check">
+                <input
+                    type="checkbox"
+                    name="principal"
+                    {% if endereco and endereco.principal %}checked{% endif %}
+                >
+                <span><strong>Endereço principal</strong></span>
+            </label>
+
+            <button class="btn btn-primary" type="submit">
+                {{ 'Salvar alterações' if endereco else 'Adicionar Endereço' }}
+            </button>
+        </div>
+    </form>
+{% endmacro %}
+
+{% block title %}Meus Endereços | Doce Pedido{% endblock %}
+{% block description %}Gerencie os endereços salvos na sua conta Doce Pedido.{% endblock %}
+
+{% block structured_data %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/conta.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/conta-recursos.css') }}">
+{% endblock %}
+
+{% block content %}
+    <section class="container section account-resource-page" data-address-page>
+        <div class="account-resource-heading">
+            <div>
+                <span class="eyebrow">Sua Conta</span>
+                <h1>Meus Endereços</h1>
+                <p>Cadastre seus endereços e escolha qual deve ser usado como principal.</p>
+            </div>
+            <button
+                class="btn btn-primary"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#novo-endereco"
+                aria-expanded="{{ 'true' if not enderecos else 'false' }}"
+                aria-controls="novo-endereco"
+            >
+                + Adicionar Endereço
+            </button>
+        </div>
+
+        {% set pagina_conta = 'enderecos' %}
+        {% include 'conta/_nav.html' %}
+
+        <div id="novo-endereco" class="collapse{% if not enderecos %} show{% endif %}">
+            <section class="address-new-card" aria-labelledby="titulo-novo-endereco">
+                <div class="address-section-title">
+                    <div>
+                        <span class="eyebrow">Novo Local</span>
+                        <h2 id="titulo-novo-endereco">Adicionar Endereço</h2>
+                    </div>
+                </div>
+                {{ formulario_endereco(acao=url_for('recursos_conta.adicionar_endereco')) }}
+            </section>
+        </div>
+
+        {% if enderecos %}
+            <div class="address-list-heading">
+                <div>
+                    <h2>Endereços Salvos</h2>
+                    <p>{{ enderecos|length }} de 10 cadastrados.</p>
+                </div>
+            </div>
+            <div class="address-grid">
+                {% for endereco in enderecos %}
+                    <article class="address-card{% if endereco.principal %} is-primary{% endif %}">
+                        <div class="address-card-top">
+                            <span class="address-card-icon" aria-hidden="true">
+                                <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                                    <path d="M3 11.5 12 4l9 7.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                                    <path d="M5.5 10.5V20h13v-9.5M9 20v-5h6v5" stroke="currentColor" stroke-width="2" stroke-linejoin="round"></path>
+                                </svg>
+                            </span>
+                            <div>
+                                <h3>{{ endereco.nome }}</h3>
+                                {% if endereco.principal %}
+                                    <span class="address-primary-badge">Principal</span>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <address class="address-card-body">
+                            <strong>{{ endereco.logradouro }}, {{ endereco.numero }}</strong>
+                            {% if endereco.complemento %}<span>{{ endereco.complemento }}</span>{% endif %}
+                            <span>{{ endereco.bairro }}</span>
+                            <span>{{ endereco.cidade }} - {{ endereco.uf }}</span>
+                            <span>CEP {{ endereco.cep_formatado }}</span>
+                            {% if endereco.referencia %}
+                                <small>Referência: {{ endereco.referencia }}</small>
+                            {% endif %}
+                        </address>
+
+                        <div class="address-card-actions">
+                            <button
+                                class="btn btn-outline-secondary"
+                                type="button"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#editar-endereco-{{ endereco.id }}"
+                                aria-expanded="false"
+                                aria-controls="editar-endereco-{{ endereco.id }}"
+                            >
+                                Editar
+                            </button>
+                            {% if not endereco.principal %}
+                                <form
+                                    method="post"
+                                    action="{{ url_for('recursos_conta.tornar_endereco_principal', endereco_id=endereco.id) }}"
+                                >
+                                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                    <button class="address-text-action" type="submit">Tornar principal</button>
+                                </form>
+                            {% endif %}
+                            <form
+                                method="post"
+                                action="{{ url_for('recursos_conta.excluir_endereco', endereco_id=endereco.id) }}"
+                                data-address-delete
+                                data-address-name="{{ endereco.nome }}"
+                            >
+                                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                <button class="address-text-action address-delete-action" type="submit">
+                                    Excluir
+                                </button>
+                            </form>
+                        </div>
+
+                        <div class="collapse address-edit-panel" id="editar-endereco-{{ endereco.id }}">
+                            <div class="address-edit-inner">
+                                <h4>Editar {{ endereco.nome }}</h4>
+                                {{ formulario_endereco(
+                                    endereco=endereco,
+                                    acao=url_for(
+                                        'recursos_conta.editar_endereco',
+                                        endereco_id=endereco.id
+                                    )
+                                ) }}
+                            </div>
+                        </div>
+                    </article>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="account-resource-empty">
+                <h2>Nenhum Endereço Salvo</h2>
+                <p>Cadastre o primeiro endereço para usar nas entregas.</p>
+            </div>
+        {% endif %}
+    </section>
+
+    <div
+        class="modal fade"
+        id="modal-excluir-endereco"
+        tabindex="-1"
+        aria-labelledby="titulo-modal-excluir-endereco"
+        aria-hidden="true"
+        data-address-delete-modal
+    >
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content account-confirm-modal">
+                <div class="modal-header">
+                    <h2 class="modal-title" id="titulo-modal-excluir-endereco">Excluir?</h2>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                </div>
+                <div class="modal-body">
+                    <p class="mb-0" data-address-delete-message></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                        Cancelar
+                    </button>
+                    <button type="button" class="btn btn-danger" data-address-delete-confirm>
+                        Excluir
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script defer src="{{ url_for('static', filename='js/conta-recursos.js') }}"></script>
+{% endblock %}

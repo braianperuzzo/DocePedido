@@ -1,0 +1,8 @@
+﻿{% extends 'layout/base.html' %}
+{% set estado_inicial = 'entrar' %}
+{% block title %}Minha Conta | Doce Pedido{% endblock %}
+{% block description %}Acesse sua conta Doce Pedido para acompanhar pedidos e finalizar suas compras.{% endblock %}
+{% block content %}
+    {% include 'autenticacao/conta.html' %}
+{% endblock %}
+

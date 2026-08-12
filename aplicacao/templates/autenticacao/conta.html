@@ -1,0 +1,128 @@
+{% macro icone_email() %}
+    <svg class="conta-icone-svg" xmlns="http://www.w3.org/2000/svg" width="20" height="16" viewBox="0 0 20.769 15.544" fill="currentColor" aria-hidden="true" focusable="false">
+        <path transform="translate(-8 -21.1)" d="M27.088,21.1H9.681A1.762,1.762,0,0,0,8,22.929V34.816a1.761,1.761,0,0,0,1.681,1.829H27.088a1.762,1.762,0,0,0,1.681-1.829V22.929A1.761,1.761,0,0,0,27.088,21.1Zm-.321,1.076-7.216,5.189a1.486,1.486,0,0,1-1.113.484,1.591,1.591,0,0,1-1.113-.484L10,22.176Zm1.014,12.64a.723.723,0,0,1-.692.753H9.681a.724.724,0,0,1-.692-.753V22.929a1.234,1.234,0,0,1,.049-.3l.025.027,7.57,5.458a2.442,2.442,0,0,0,1.8.807,2.483,2.483,0,0,0,1.8-.807l7.463-5.458.025-.027a1.043,1.043,0,0,1,.049.3V34.816Z"></path>
+    </svg>
+{% endmacro %}
+
+{% macro icone_cadeado() %}
+    <svg class="conta-icone-svg" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 13.216 15.419" fill="currentColor" aria-hidden="true" focusable="false">
+        <path transform="translate(-4 -2)" d="M15.564,6.956h-1.1V5.3a3.3,3.3,0,0,0-3.3-3.3h-1.1a3.3,3.3,0,0,0-3.3,3.3V6.956h-1.1A1.652,1.652,0,0,0,4,8.608v7.159a1.652,1.652,0,0,0,1.652,1.652h9.912a1.652,1.652,0,0,0,1.652-1.652V8.608a1.652,1.652,0,0,0-1.652-1.652ZM7.855,5.3a2.2,2.2,0,0,1,2.2-2.2h1.1a2.2,2.2,0,0,1,2.2,2.2V6.956H7.855Zm8.26,10.463a.551.551,0,0,1-.551.551H5.652a.551.551,0,0,1-.551-.551V8.608a.551.551,0,0,1,.551-.551h9.912a.551.551,0,0,1,.551.551Zm-4.956-2.2v1.1a.551.551,0,1,1-1.1,0v-1.1a.551.551,0,0,1,1.1,0Z"></path>
+    </svg>
+{% endmacro %}
+
+{% macro botao_olho(campo) %}
+    <button class="conta-senha-toggle" type="button" data-password-toggle="{{ campo }}" aria-label="Mostrar senha">
+        <span class="conta-olho-estado olho-aberto" aria-hidden="true">
+            <svg class="conta-olho-svg" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" focusable="false">
+                <path d="M15.0007 12C15.0007 13.6569 13.6576 15 12.0007 15C10.3439 15 9.00073 13.6569 9.00073 12C9.00073 10.3431 10.3439 9 12.0007 9C13.6576 9 15.0007 10.3431 15.0007 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                <path d="M12.0012 5C7.52354 5 3.73326 7.94288 2.45898 12C3.73324 16.0571 7.52354 19 12.0012 19C16.4788 19 20.2691 16.0571 21.5434 12C20.2691 7.94291 16.4788 5 12.0012 5Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+            </svg>
+        </span>
+        <span class="conta-olho-estado olho-fechado" aria-hidden="true" hidden>
+            <svg class="conta-olho-svg" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" focusable="false">
+                <path d="M2.99902 3L20.999 21M9.8433 9.91364C9.32066 10.4536 8.99902 11.1892 8.99902 12C8.99902 13.6569 10.3422 15 11.999 15C12.8215 15 13.5667 14.669 14.1086 14.133M6.49902 6.64715C4.59972 7.90034 3.15305 9.78394 2.45703 12C3.73128 16.0571 7.52159 19 11.9992 19C13.9881 19 15.8414 18.4194 17.3988 17.4184M10.999 5.04939C11.328 5.01673 11.6617 5 11.9992 5C16.4769 5 20.2672 7.94291 21.5414 12C21.2607 12.894 20.8577 13.7338 20.3522 14.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+            </svg>
+        </span>
+    </button>
+{% endmacro %}
+
+{% macro campo(id, nome, label, tipo='text', autocomplete='', icone='email', valor='', descricao='', placeholder='') %}
+    <div class="conta-campo">
+        <span class="conta-campo-icone">
+            {% if icone == 'email' %}
+                {{ icone_email() }}
+            {% elif icone == 'senha' %}
+                {{ icone_cadeado() }}
+            {% elif icone == 'pessoa' %}
+                <svg class="conta-icone-svg" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 14 14" aria-hidden="true" focusable="false">
+                    <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0Zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4Zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10Z"></path>
+                </svg>
+            {% else %}
+                <svg class="conta-icone-svg" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+                    <path d="M5.526 13.09c.976 0 1.524-.79 1.524-2.205 0-1.412-.548-2.203-1.524-2.203-.978 0-1.526.79-1.526 2.203 0 1.415.548 2.206 1.526 2.206zm-.832-2.205c0-1.05.29-1.612.832-1.612.358 0 .607.247.733.721L4.7 11.137a6.749 6.749 0 0 1-.006-.252zm.832 1.614c-.36 0-.606-.246-.732-.718l1.556-1.145c.003.079.005.164.005.249 0 1.052-.29 1.614-.829 1.614zm5.329.501v-.595H9.73V8.772h-.69l-1.19.786v.688L8.986 9.5h.05v2.906h-1.18V13h3z"></path>
+                    <path d="M4 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H4zm0 1h8a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1z"></path>
+                </svg>
+            {% endif %}
+        </span>
+        <span class="conta-campo-conteudo">
+            <label for="{{ id }}">{{ label }}</label>
+            <input
+                id="{{ id }}"
+                name="{{ nome }}"
+                type="{{ tipo }}"
+                autocomplete="{{ autocomplete }}"
+                value="{{ valor }}"
+                placeholder="{{ placeholder }}"
+                {% if descricao %}aria-describedby="{{ descricao }}"{% endif %}
+                required
+            >
+        </span>
+        {% if tipo == 'password' %}
+            {{ botao_olho(id) }}
+        {% endif %}
+    </div>
+{% endmacro %}
+
+<section class="auth-section conta-area" data-account-area data-initial-panel="{{ estado_inicial }}">
+    <div class="conta-card">
+        <header class="conta-cabecalho">
+            <h1>Minha Conta</h1>
+            <p>Entre na sua conta ou faça seu cadastro.</p>
+        </header>
+        <div class="conta-tabs" role="tablist" aria-label="Acesso à conta">
+            <button id="tab-entrar" type="button" role="tab" aria-controls="painel-entrar" data-account-tab="entrar">Entrar</button>
+            <button id="tab-cadastrar" type="button" role="tab" aria-controls="painel-cadastrar" data-account-tab="cadastrar">Cadastrar</button>
+        </div>
+
+        <div id="painel-entrar" role="tabpanel" aria-labelledby="tab-entrar" data-account-panel="entrar">
+            <form method="post" action="{{ url_for('autenticacao.login') }}" class="conta-formulario">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                {{ campo('login-email', 'email', 'E-mail', 'email', 'email', valor=request.form.get('email', ''), placeholder='exemplo@exemplo.com.br') }}
+                {{ campo('login-senha', 'senha', 'Senha', 'password', 'current-password', icone='senha', placeholder='Digite sua Senha') }}
+                <div class="conta-acoes-auxiliares">
+                    <label><input type="checkbox" name="lembrar"> Lembrar-me</label>
+                    <button type="button" class="conta-link" data-forgot-password>Esqueceu a Senha?</button>
+                </div>
+                <p class="conta-politicas">Ao entrar na Doce Pedido, você declara estar ciente e concorda com a <a href="{{ url_for('institucional.privacidade') }}">Política de Privacidade</a>, os <a href="{{ url_for('institucional.termos') }}">Termos de Uso</a> e a <a href="{{ url_for('institucional.cookies') }}">Política de Cookies</a>.</p>
+                <button class="btn btn-primary conta-botao" type="submit">Entrar</button>
+            </form>
+        </div>
+
+        <div id="painel-recuperar" role="tabpanel" aria-labelledby="titulo-recuperar" data-account-panel="recuperar" hidden>
+            <div class="conta-recuperacao">
+                <h2 id="titulo-recuperar">Esqueceu a Senha?</h2>
+                <p>Digite seu e-mail para receber o link de redefinição.</p>
+                <form data-password-recovery novalidate>
+                    {{ campo('recuperar-email', 'email-recuperacao', 'E-mail', 'email', 'email', descricao='recuperar-mensagem', placeholder='exemplo@exemplo.com.br') }}
+                    <p id="recuperar-mensagem" class="conta-mensagem" aria-live="polite"></p>
+                    <button class="btn btn-primary conta-botao" type="submit">Enviar</button>
+                </form>
+                <button type="button" class="conta-link conta-voltar" data-back-to-login>← Voltar para o Login</button>
+            </div>
+        </div>
+
+        <div id="painel-cadastrar" role="tabpanel" aria-labelledby="tab-cadastrar" data-account-panel="cadastrar">
+            <form method="post" action="{{ url_for('autenticacao.cadastro') }}" class="conta-formulario" novalidate>
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                {{ campo('cadastro-nome', 'nome', 'Nome', autocomplete='name', icone='pessoa', valor=request.form.get('nome', ''), placeholder='Nome Completo') }}
+                {{ campo('cadastro-cpf', 'cpf', 'CPF', autocomplete='off', icone='cpf', valor=request.form.get('cpf', ''), placeholder='000.000.000-00') }}
+                {{ campo('cadastro-email', 'email', 'E-mail', 'email', 'email', valor=request.form.get('email', ''), placeholder='exemplo@exemplo.com.br') }}
+                {{ campo('cadastro-senha', 'senha', 'Senha', 'password', 'new-password', icone='senha', descricao='criterios-senha', placeholder='Crie uma Senha') }}
+                <div id="criterios-senha" class="conta-criterios" aria-live="polite" data-password-criteria>
+                    <strong>A senha deve conter:</strong>
+                    <ul>
+                        <li data-password-rule="length">✕ Mínimo de 8 caracteres</li>
+                        <li data-password-rule="upper">✕ Uma letra maiúscula</li>
+                        <li data-password-rule="lower">✕ Uma letra minúscula</li>
+                        <li data-password-rule="number">✕ Um número</li>
+                        <li data-password-rule="special">✕ Um caractere especial</li>
+                    </ul>
+                </div>
+                {{ campo('cadastro-confirmacao', 'confirmacao_senha', 'Repita a Senha', 'password', 'new-password', icone='senha', descricao='confirmacao-mensagem', placeholder='Repita sua Senha') }}
+                <p id="confirmacao-mensagem" class="conta-mensagem" aria-live="polite"></p>
+                <p class="conta-politicas">Ao criar sua conta na Doce Pedido, você declara estar ciente e concorda com a <a href="{{ url_for('institucional.privacidade') }}">Política de Privacidade</a>, os <a href="{{ url_for('institucional.termos') }}">Termos de Uso</a> e a <a href="{{ url_for('institucional.cookies') }}">Política de Cookies</a>.</p>
+                <button class="btn btn-primary conta-botao" type="submit">Cadastrar</button>
+            </form>
+        </div>
+    </div>
+</section>

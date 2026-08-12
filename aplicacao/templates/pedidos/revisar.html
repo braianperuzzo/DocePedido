@@ -1,0 +1,285 @@
+{% extends 'layout/base.html' %}
+
+{% block title %}Revisar Pedido | Doce Pedido{% endblock %}
+{% block description %}Revise entrega, pagamento e itens antes de finalizar seu pedido.{% endblock %}
+
+{% block structured_data %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/checkout.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/checkout-endereco.css') }}">
+{% endblock %}
+
+{% block body_attributes %}
+    data-analytics-event="begin_checkout" data-analytics-item-count="{{ quantidade_carrinho }}"
+{% endblock %}
+
+{% block content %}
+    <section class="container section checkout-page" data-checkout>
+        <div class="checkout-heading">
+            <div>
+                <span class="eyebrow">Finalizar Pedido</span>
+                <h1>Revisar Pedido</h1>
+            </div>
+            <a class="checkout-back-link" href="{{ url_for('carrinho.visualizar') }}">
+                Voltar ao Carrinho
+            </a>
+        </div>
+
+        <form class="checkout-form" method="post" action="{{ url_for('pedidos.confirmar') }}">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+            <div class="checkout-grid">
+                <div class="checkout-main">
+                    <section class="checkout-card" aria-labelledby="checkout-recebimento">
+                        <div class="checkout-card-heading">
+                            <span class="checkout-step">1</span>
+                            <div>
+                                <span class="eyebrow">Recebimento</span>
+                                <h2 id="checkout-recebimento">Como Você Quer Receber?</h2>
+                            </div>
+                        </div>
+
+                        <div class="checkout-options checkout-options-receipt">
+                            <label class="checkout-option{% if not enderecos %} is-disabled{% endif %}">
+                                <input
+                                    type="radio"
+                                    name="tipo_entrega"
+                                    value="entrega"
+                                    data-receipt-option
+                                    {% if enderecos %}checked{% else %}disabled{% endif %}
+                                >
+                                <span class="checkout-option-control" aria-hidden="true"></span>
+                                <span class="checkout-option-content">
+                                    <span class="checkout-option-title-row">
+                                        <strong>Entregar no meu Endereço</strong>
+                                        <span class="checkout-free-badge">Frete grátis</span>
+                                    </span>
+                                    <small>Escolha um dos endereços salvos na sua conta.</small>
+                                </span>
+                            </label>
+
+                            <label class="checkout-option">
+                                <input
+                                    type="radio"
+                                    name="tipo_entrega"
+                                    value="retirada"
+                                    data-receipt-option
+                                    {% if not enderecos %}checked{% endif %}
+                                >
+                                <span class="checkout-option-control" aria-hidden="true"></span>
+                                <span class="checkout-option-content">
+                                    <span class="checkout-option-title-row">
+                                        <strong>Retirar na Loja</strong>
+                                        <span class="checkout-free-badge">Sem frete</span>
+                                    </span>
+                                </span>
+                            </label>
+                        </div>
+
+                        {% if enderecos %}
+                            <div class="checkout-address" data-delivery-address>
+                                <div class="checkout-address-content">
+                                    <div class="checkout-address-header">
+                                        <div>
+                                            <small>Endereço de entrega</small>
+                                            <strong data-selected-address-name>{{ endereco.nome }}</strong>
+                                        </div>
+                                        <a href="{{ url_for('recursos_conta.enderecos') }}">Gerenciar endereços</a>
+                                    </div>
+
+                                    <div class="checkout-address-selector">
+                                        <label for="checkout-endereco">Trocar endereço</label>
+                                        <select
+                                            class="form-select"
+                                            id="checkout-endereco"
+                                            name="endereco_id"
+                                            data-checkout-address-select
+                                            required
+                                        >
+                                            {% for endereco_opcao in enderecos %}
+                                                <option
+                                                    value="{{ endereco_opcao.id }}"
+                                                    data-address-name="{{ endereco_opcao.nome }}"
+                                                    {% if loop.first %}selected{% endif %}
+                                                >
+                                                    {{ endereco_opcao.nome }}{% if endereco_opcao.principal %} · Principal{% endif %}
+                                                </option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+
+                                    {% for endereco_opcao in enderecos %}
+                                        <address
+                                            data-checkout-address-detail="{{ endereco_opcao.id }}"
+                                            {% if not loop.first %}hidden{% endif %}
+                                        >
+                                            {% for linha in endereco_opcao.linhas %}
+                                                <span>{{ linha }}</span>
+                                            {% endfor %}
+                                        </address>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        {% else %}
+                            <div class="checkout-address checkout-address-empty" data-delivery-address hidden>
+                                <div>
+                                    <strong>Nenhum endereço salvo.</strong>
+                                    <p>Cadastre um endereço para receber em casa.</p>
+                                </div>
+                                <a class="btn btn-outline-secondary" href="{{ url_for('recursos_conta.enderecos') }}">
+                                    Cadastrar endereço
+                                </a>
+                            </div>
+                        {% endif %}
+
+                        <div
+                            class="checkout-address checkout-pickup"
+                            data-pickup-address
+                            {% if enderecos %}hidden{% endif %}
+                        >
+                            <div class="checkout-address-content">
+                                <div class="checkout-address-header">
+                                    <div>
+                                        <small>Retirada na Loja</small>
+                                        <strong>Doce Pedido</strong>
+                                    </div>
+                                </div>
+                                {% if informacoes_site.endereco.completo %}
+                                    <address>
+                                        <span>{{ informacoes_site.endereco.completo }}</span>
+                                    </address>
+                                {% else %}
+                                    <p>O endereço de retirada será informado na confirmação do pedido.</p>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="checkout-card" aria-labelledby="checkout-pagamento">
+                        <div class="checkout-card-heading">
+                            <span class="checkout-step">2</span>
+                            <div>
+                                <span class="eyebrow">Pagamento</span>
+                                <h2 id="checkout-pagamento">Forma de Pagamento</h2>
+                            </div>
+                        </div>
+
+                        <div class="checkout-options checkout-payment-options">
+                            <label class="checkout-option">
+                                <input type="radio" name="forma_pagamento" value="na_entrega" checked>
+                                <span class="checkout-option-control" aria-hidden="true"></span>
+                                <span class="checkout-option-content">
+                                    <span class="checkout-option-title-row">
+                                        <strong>Pagamento Presencial</strong>
+                                        <span class="checkout-available-badge">Disponível</span>
+                                    </span>
+                                    <small>Pague presencialmente ao receber ou retirar o pedido.</small>
+                                </span>
+                            </label>
+
+                            <label class="checkout-option is-disabled">
+                                <input type="radio" name="forma_pagamento_indisponivel" value="pix" disabled>
+                                <span class="checkout-option-control" aria-hidden="true"></span>
+                                <span class="checkout-option-content">
+                                    <span class="checkout-option-title-row">
+                                        <strong>Pix Online</strong>
+                                        <span class="checkout-soon-badge">Em Breve</span>
+                                    </span>
+                                </span>
+                            </label>
+
+                            <label class="checkout-option is-disabled">
+                                <input type="radio" name="forma_pagamento_indisponivel" value="cartao" disabled>
+                                <span class="checkout-option-control" aria-hidden="true"></span>
+                                <span class="checkout-option-content">
+                                    <span class="checkout-option-title-row">
+                                        <strong>Cartão de Crédito Online</strong>
+                                        <span class="checkout-soon-badge">Em Breve</span>
+                                    </span>
+                                </span>
+                            </label>
+                        </div>
+                    </section>
+                </div>
+
+                <aside class="checkout-summary" aria-labelledby="checkout-resumo">
+                    <span class="eyebrow">Seu Pedido</span>
+                    <h2 id="checkout-resumo">Resumo</h2>
+
+                    <div class="checkout-summary-items">
+                        {% for item in itens %}
+                            <div class="checkout-summary-item">
+                                <a
+                                    class="checkout-summary-product"
+                                    href="{{ url_for('produtos.detalhes', produto_id=item.produto.id) }}"
+                                    aria-label="Ver {{ item.produto.nome }}"
+                                >
+                                    {% if imagem_produto_existe(item.produto.imagem) %}
+                                        <img
+                                            class="checkout-summary-thumb"
+                                            loading="lazy"
+                                            decoding="async"
+                                            src="{{ url_for('static', filename=item.produto.imagem) }}"
+                                            alt=""
+                                        >
+                                    {% else %}
+                                        <span class="image-placeholder checkout-summary-thumb" aria-hidden="true">
+                                            Doce Pedido
+                                        </span>
+                                    {% endif %}
+                                    <span class="checkout-summary-copy">
+                                        <strong>{{ item.produto.nome }}</strong>
+                                        <small>{{ item.quantidade }} × {{ item.produto.preco|moeda }}</small>
+                                    </span>
+                                </a>
+                                <strong>{{ item.subtotal|moeda }}</strong>
+                            </div>
+                        {% endfor %}
+                    </div>
+
+                    <dl class="checkout-totals">
+                        <div>
+                            <dt>Subtotal</dt>
+                            <dd>{{ subtotal|moeda }}</dd>
+                        </div>
+                        {% if cupom %}
+                            <div>
+                                <dt>Desconto · {{ cupom }}</dt>
+                                <dd>-{{ desconto|moeda }}</dd>
+                            </div>
+                        {% endif %}
+                        <div>
+                            <dt>Frete</dt>
+                            <dd class="checkout-free-value">Grátis</dd>
+                        </div>
+                        <div class="checkout-total-row">
+                            <dt>Total</dt>
+                            <dd>{{ total|moeda }}</dd>
+                        </div>
+                    </dl>
+
+                    <div class="checkout-summary-meta">
+                        <div>
+                            <small>Recebimento</small>
+                            <strong data-receipt-label>
+                                {% if enderecos %}Entrega{% else %}Retirada na Loja{% endif %}
+                            </strong>
+                        </div>
+                        <div>
+                            <small>Pagamento</small>
+                            <strong>Presencial</strong>
+                        </div>
+                    </div>
+
+                    <button class="btn btn-primary btn-lg w-100 checkout-submit" type="submit">
+                        Finalizar Pedido
+                    </button>
+                    <p class="checkout-email-note">
+                        A confirmação será enviada para {{ current_user.email }}.
+                    </p>
+                </aside>
+            </div>
+        </form>
+    </section>
+
+    <script defer src="{{ url_for('static', filename='js/checkout.js') }}"></script>
+{% endblock %}

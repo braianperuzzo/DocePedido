@@ -1,0 +1,65 @@
+{% extends 'layout/base.html' %}
+{% block title %}
+    Entrega e Retirada | Doce Pedido
+{% endblock %}
+{% block description %}
+    Consulte como funcionam a entrega com frete grátis e a retirada na Doce Pedido.
+{% endblock %}
+{% block canonical %}
+    {{ url_publica_para('institucional.entrega') }}
+{% endblock %}
+{% block robots %}index, follow{% endblock %}
+{% block content %}
+    <article class="container section legal-page">
+        <nav aria-label="Navegação estrutural">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="{{ url_for('pagina_inicial.inicio') }}">
+                        Início
+                    </a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">
+                    Entrega e Retirada
+                </li>
+            </ol>
+        </nav>
+        <span class="eyebrow">
+            Recebimento do Pedido
+        </span>
+        <h1>
+            Entrega e Retirada
+        </h1>
+        <p class="lead">
+            Na revisão do pedido, você escolhe entre entrega em um endereço salvo ou Retirada na Loja.
+        </p>
+        <h2>
+            Entrega
+        </h2>
+        <p>
+            O fluxo atual trabalha com frete grátis. Antes de confirmar, você pode escolher
+            entre os endereços cadastrados na sua conta e conferir qual deles será usado no pedido.
+        </p>
+        <h2>
+            Retirada
+        </h2>
+        <p>
+            Você também pode escolher retirar o pedido na loja. Quando o endereço comercial
+            estiver configurado no site, ele será exibido na revisão do pedido e nesta página.
+        </p>
+        {% if informacoes_site.endereco.completo %}
+            <p>
+                {{ informacoes_site.endereco.completo }}
+            </p>
+        {% endif %}
+        {% if informacoes_site.endereco.maps %}
+            <a
+                class="btn btn-outline-secondary"
+                href="{{ informacoes_site.endereco.maps }}"
+                target="_blank"
+                rel="noopener noreferrer"
+            >
+                Ver no Mapa
+            </a>
+        {% endif %}
+    </article>
+{% endblock %}

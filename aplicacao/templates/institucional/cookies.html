@@ -1,0 +1,60 @@
+{% extends 'layout/base.html' %}
+{% block title %}
+    Política de Cookies | Doce Pedido
+{% endblock %}
+{% block description %}
+    Entenda os cookies essenciais e de análise da Doce Pedido e saiba como alterar suas preferências.
+{% endblock %}
+{% block canonical %}
+    {{ url_publica_para('institucional.cookies') }}
+{% endblock %}
+{% block robots %}index, follow{% endblock %}
+{% block content %}
+    <article class="container section legal-page">
+        <span class="eyebrow">
+            Transparência e Escolha
+        </span>
+        <h1>
+            Política de Cookies
+        </h1>
+        <p class="lead">
+            Cookies são pequenos registros usados pelo navegador para manter recursos e preferências de um site.
+        </p>
+        <h2>
+            Cookies Essenciais
+        </h2>
+        <p>
+            São necessários para sessão, autenticação, proteção de formulários, carrinho,
+            cupom aplicado e preferências fundamentais. Permanecem ativos para que a loja
+            funcione corretamente.
+        </p>
+        <h2>
+            Cookies de Análise
+        </h2>
+        <p>
+            São opcionais. Quando o Google Analytics estiver configurado, somente serão
+            utilizados depois de sua autorização para compreender o uso agregado das
+            páginas, sem envio intencional de dados pessoais pelo código de análise.
+        </p>
+        <h2>
+            Como Escolher
+        </h2>
+        <p>
+            No primeiro acesso, você pode aceitar cookies de análise ou abrir
+            “Gerenciar preferências”. Nesse painel, é possível aceitar ou recusar os
+            cookies não essenciais e salvar a escolha. Use “Configurar Cookies” nesta
+            página para alterar a decisão posteriormente.
+        </p>
+        <button class="btn btn-primary" type="button" data-cookie-settings>
+            Configurar Cookies
+        </button>
+        <h2>
+            Configuração do Navegador
+        </h2>
+        <p>
+            Seu navegador também permite visualizar, bloquear ou apagar cookies. O
+            bloqueio dos cookies essenciais pode impedir login, carrinho e outros
+            recursos da loja.
+        </p>
+    </article>
+{% endblock %}

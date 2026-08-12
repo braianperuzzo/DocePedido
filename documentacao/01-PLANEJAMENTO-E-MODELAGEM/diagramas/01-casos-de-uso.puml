@@ -1,0 +1,68 @@
+@startuml
+left to right direction
+skinparam packageStyle rectangle
+
+actor Visitante
+actor Cliente
+actor "Serviço de e-mail" as Email
+actor "Serviço de localização" as Localizacao
+
+Cliente --|> Visitante
+
+rectangle "Doce Pedido" {
+  usecase "Consultar catálogo" as UC_Catalogo
+  usecase "Pesquisar produtos" as UC_Busca
+  usecase "Montar carrinho" as UC_Carrinho
+  usecase "Criar conta" as UC_Cadastro
+  usecase "Confirmar cadastro" as UC_ConfirmaCadastro
+  usecase "Entrar na conta" as UC_Login
+  usecase "Recuperar senha" as UC_Recuperar
+  usecase "Validar dispositivo" as UC_Dispositivo
+  usecase "Gerenciar dados e senha" as UC_Dados
+  usecase "Confirmar alteração" as UC_ConfirmaAlteracao
+  usecase "Gerenciar endereços" as UC_Enderecos
+  usecase "Consultar CEP/UF/município" as UC_Localizacao
+  usecase "Gerenciar favoritos" as UC_Favoritos
+  usecase "Aplicar cupom de primeira compra" as UC_Cupom
+  usecase "Finalizar pedido" as UC_Finalizar
+  usecase "Selecionar recebimento" as UC_Recebimento
+  usecase "Selecionar endereço" as UC_EnderecoEntrega
+  usecase "Confirmar pedido" as UC_ConfirmarPedido
+  usecase "Acompanhar pedidos" as UC_Pedidos
+  usecase "Excluir Conta" as UC_Excluir
+  usecase "Confirmar exclusão" as UC_ConfirmaExclusao
+}
+
+Visitante --> UC_Catalogo
+Visitante --> UC_Busca
+Visitante --> UC_Carrinho
+Visitante --> UC_Cadastro
+Visitante --> UC_Login
+Visitante --> UC_Recuperar
+
+Cliente --> UC_Dados
+Cliente --> UC_Enderecos
+Cliente --> UC_Favoritos
+Cliente --> UC_Cupom
+Cliente --> UC_Finalizar
+Cliente --> UC_Pedidos
+Cliente --> UC_Excluir
+
+UC_Cadastro .> UC_ConfirmaCadastro : <<include>>
+UC_ConfirmaAlteracao .> UC_Dados : <<extend>>\nquando alteração exige confirmação
+UC_Localizacao .> UC_Enderecos : <<extend>>\nquando consulta externa está disponível
+UC_Finalizar .> UC_Recebimento : <<include>>
+UC_Finalizar .> UC_ConfirmarPedido : <<include>>
+UC_EnderecoEntrega .> UC_Finalizar : <<extend>>\nquando entrega em endereço
+UC_Cupom .> UC_Finalizar : <<extend>>\nquando cupom informado
+UC_Excluir .> UC_ConfirmaExclusao : <<include>>
+UC_Dispositivo .> UC_Login : <<extend>>\nquando dispositivo precisa validação
+
+Email --> UC_ConfirmaCadastro
+Email --> UC_Recuperar
+Email --> UC_Dispositivo
+Email --> UC_ConfirmaAlteracao
+Email --> UC_ConfirmarPedido
+Email --> UC_ConfirmaExclusao
+Localizacao --> UC_Localizacao
+@enduml

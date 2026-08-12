@@ -1,0 +1,23 @@
+{% extends 'layout/base.html' %}
+{% block title %}
+    Página não encontrada | Doce Pedido
+{% endblock %}
+{% block description %}
+    A página ou produto solicitado não está disponível.
+{% endblock %}
+{% block content %}
+    <div class="container text-center py-5">
+        <div class="display-1">
+            🧁
+        </div>
+        <h1>
+            Produto Não Encontrado
+        </h1>
+        <p class="text-secondary">
+            Este produto não está disponível.
+        </p>
+        <a class="btn btn-primary" href="{{ url_for('produtos.catalogo') }}">
+            Voltar ao catálogo
+        </a>
+    </div>
+{% endblock %}

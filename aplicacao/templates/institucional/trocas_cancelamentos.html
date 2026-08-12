@@ -1,0 +1,59 @@
+{% extends 'layout/base.html' %}
+{% block title %}
+    Trocas e Cancelamentos | Doce Pedido
+{% endblock %}
+{% block description %}
+    Consulte como entrar em contato sobre problemas, trocas ou cancelamentos na Doce Pedido.
+{% endblock %}
+{% block canonical %}
+    {{ url_publica_para('institucional.trocas_cancelamentos') }}
+{% endblock %}
+{% block robots %}index, follow{% endblock %}
+{% block content %}
+    <article class="container section legal-page">
+        <nav aria-label="Navegação estrutural">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="{{ url_for('pagina_inicial.inicio') }}">
+                        Início
+                    </a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">
+                    Trocas e Cancelamentos
+                </li>
+            </ol>
+        </nav>
+        <span class="eyebrow">
+            Atendimento do Pedido
+        </span>
+        <h1>
+            Trocas e Cancelamentos
+        </h1>
+        <p class="lead">
+            O site não possui um fluxo automático para trocar ou cancelar pedidos já confirmados.
+        </p>
+        <h2>
+            Problemas com o Pedido
+        </h2>
+        <p>
+            Se você identificar um problema com um pedido, utilize o canal de contato
+            informado pela loja quando ele estiver disponível no site.
+        </p>
+        <h2>
+            Cancelamentos
+        </h2>
+        <p>
+            Solicitações de cancelamento também dependem de contato com a loja. A
+            aplicação não altera automaticamente a situação de um pedido após o fechamento.
+        </p>
+        {% if informacoes_site.email %}
+            <p>
+                E-mail de contato:
+                <a href="mailto:{{ informacoes_site.email }}">
+                    {{ informacoes_site.email }}
+                </a>
+                .
+            </p>
+        {% endif %}
+    </article>
+{% endblock %}

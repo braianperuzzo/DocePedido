@@ -1,0 +1,24 @@
+{% extends 'emails/base_email.html' %}
+
+{% block titulo_oculto %}Confirme a Exclusão da sua Conta{% endblock %}
+{% block titulo %}Confirme a Exclusão da sua Conta{% endblock %}
+
+{% block conteudo %}
+    <p>Olá, {{ nome }}.</p>
+    <p>Recebemos uma solicitação para excluir sua conta Doce Pedido.</p>
+    <div style="margin:24px 0;padding:16px;border:1px solid #e8dcd1;border-radius:8px;background-color:#fff8f0;">
+        <p style="margin:0;">
+            <strong>A conta ainda não foi excluída.</strong>
+            A exclusão só será concluída depois da confirmação pelo botão abaixo.
+        </p>
+    </div>
+    <p>Ao confirmar, sua conta e os dados vinculados a ela serão removidos definitivamente.</p>
+    <p style="margin:28px 0;text-align:center;">
+        <a href="{{ link }}" style="display:inline-block;padding:12px 22px;border-radius:8px;background-color:#984d54;color:#ffffff;text-decoration:none;font-weight:bold;">
+            Confirmar Exclusão da Conta
+        </a>
+    </p>
+    <p style="color:#78625e;font-size:13px;">
+        Se você não solicitou a exclusão, ignore este e-mail. Sua conta continuará ativa normalmente.
+    </p>
+{% endblock %}

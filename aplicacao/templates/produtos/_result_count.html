@@ -1,0 +1,8 @@
+{% set quantidade = produtos|length %}
+{% if quantidade == 0 %}
+    Nenhum Produto Encontrado.
+{% elif quantidade == 1 %}
+    1 Produto Encontrado.
+{% else %}
+    {{ quantidade }} Produtos Encontrados.
+{% endif %}

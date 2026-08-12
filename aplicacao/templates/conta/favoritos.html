@@ -1,0 +1,54 @@
+{% extends 'layout/base.html' %}
+
+{% block title %}Cupcakes Favoritos | Doce Pedido{% endblock %}
+{% block description %}Veja os cupcakes que você marcou como favoritos na Doce Pedido.{% endblock %}
+
+{% block content %}
+    <section class="container section account-resource-page favorite-account-page" data-favorites-page>
+        <div class="account-resource-heading favorite-account-heading">
+            <div>
+                <span class="eyebrow">Sua Conta</span>
+                <h1>Cupcakes Favoritos</h1>
+                <p>
+                    Guarde os sabores que você mais gostou para encontrá-los novamente com facilidade.
+                </p>
+            </div>
+            <a class="btn btn-primary" href="{{ url_for('produtos.catalogo') }}">
+                Explorar Cupcakes
+            </a>
+        </div>
+
+        {% set pagina_conta = 'favoritos' %}
+        {% include 'conta/_nav.html' %}
+
+        {% if produtos %}
+            <div class="catalog-grid products-grid favorite-products-grid" data-favorites-grid>
+                {% for produto in produtos %}
+                    {% include 'produtos/_card.html' %}
+                {% endfor %}
+            </div>
+            <div class="account-resource-empty" data-favorites-empty hidden>
+                <h2>Sem Favoritos</h2>
+                <p>Marque um coração no catálogo para guardar seus cupcakes preferidos.</p>
+                <a class="btn btn-primary" href="{{ url_for('produtos.catalogo') }}">
+                    Ver Produtos
+                </a>
+            </div>
+        {% else %}
+            <div class="favorite-empty-state account-resource-empty" data-favorites-empty>
+                <span class="favorite-empty-heart" aria-hidden="true">
+                    <svg width="42" height="42" viewBox="0 0 24 24" fill="none">
+                        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                    </svg>
+                </span>
+                <h2>Você Ainda Não Favoritou Nenhum Cupcake</h2>
+                <p>
+                    Quando encontrar um sabor que queira guardar, clique no coração. Ele aparecerá aqui automaticamente.
+                </p>
+                <a class="btn btn-primary" href="{{ url_for('produtos.catalogo') }}">
+                    Ver Produtos
+                </a>
+            </div>
+        {% endif %}
+    </section>
+{% endblock %}

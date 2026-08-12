@@ -1,0 +1,110 @@
+{% extends 'layout/base.html' %}
+{% block title %}
+    Política de Privacidade | Doce Pedido
+{% endblock %}
+{% block description %}
+    Saiba quais dados a Doce Pedido usa nos recursos de conta e pedidos e como eles são protegidos.
+{% endblock %}
+{% block canonical %}
+    {{ url_publica_para('institucional.privacidade') }}
+{% endblock %}
+{% block robots %}index, follow{% endblock %}
+{% block content %}
+    <article class="container section legal-page">
+        <nav aria-label="Navegação estrutural">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="{{ url_for('pagina_inicial.inicio') }}">
+                        Início
+                    </a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">
+                    Política de Privacidade
+                </li>
+            </ol>
+        </nav>
+        <span class="eyebrow">
+            Transparência
+        </span>
+        <h1>
+            Política de Privacidade
+        </h1>
+        <p class="lead">
+            Utilizamos os dados necessários para oferecer os recursos de conta, segurança e pedidos disponíveis no site.
+        </p>
+        <h2>
+            Dados Utilizados
+        </h2>
+        <p>
+            O cadastro utiliza nome, CPF, e-mail, celular opcional e credenciais protegidas.
+            Quando você usa outros recursos, também podem ser registrados endereços, favoritos,
+            pedidos e informações necessárias à segurança da conta.
+        </p>
+        <h2>
+            Finalidades
+        </h2>
+        <p>
+            Esses dados permitem criar e proteger a conta, autenticar o cliente, manter
+            endereços e favoritos, concluir pedidos, enviar confirmações por e-mail e
+            permitir o acompanhamento do histórico.
+        </p>
+        <p>
+            O CPF também é utilizado para verificar se o cupom BEMVINDO ainda pode ser
+            aplicado à primeira compra. Por esse motivo, ele não pode ser alterado na área
+            Minha Conta depois do cadastro.
+        </p>
+        <h2>
+            Pedidos e Endereços
+        </h2>
+        <p>
+            Quando um pedido é confirmado para entrega, o endereço escolhido é copiado
+            para o registro do pedido. Dessa forma, o histórico continua indicando o
+            endereço usado naquela compra mesmo que um endereço salvo seja alterado depois.
+        </p>
+        <p>
+            Quando houver cupom, o pedido também registra o código aplicado e o valor do desconto.
+        </p>
+        <h2>
+            Segurança e Conservação
+        </h2>
+        <p>
+            Aplicamos controles de acesso, proteção de formulários e armazenamento por
+            hash para senhas e determinados tokens de segurança. A aplicação não armazena
+            dados de cartão, pois não possui pagamento on-line.
+        </p>
+        <h2>
+            Sessão, Cookies e Análise
+        </h2>
+        <p>
+            Cookies essenciais mantêm autenticação, segurança, carrinho e preferências.
+            Cookies de análise são opcionais. O Google Analytics só pode ser carregado
+            quando estiver configurado e você autorizar essa categoria.
+        </p>
+        <p>
+            Não vendemos dados pessoais e o site não utiliza cookies de publicidade ou remarketing. Consulte a
+            <a href="{{ url_for('institucional.cookies') }}">
+                Política de Cookies
+            </a>
+            para alterar suas preferências.
+        </p>
+        <h2>
+            Exclusão da Conta
+        </h2>
+        <p>
+            A área Minha Conta permite solicitar a exclusão. A remoção só é executada
+            depois da confirmação enviada para o e-mail cadastrado.
+        </p>
+        {% if informacoes_site.email %}
+            <h2>
+                Contato
+            </h2>
+            <p>
+                Para dúvidas sobre privacidade, escreva para
+                <a href="mailto:{{ informacoes_site.email }}">
+                    {{ informacoes_site.email }}
+                </a>
+                .
+            </p>
+        {% endif %}
+    </article>
+{% endblock %}

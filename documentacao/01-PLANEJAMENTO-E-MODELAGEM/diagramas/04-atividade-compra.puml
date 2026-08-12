@@ -1,0 +1,47 @@
+@startuml
+start
+:Adicionar produtos ao carrinho;
+:Abrir revisão do pedido;
+
+if (Cliente autenticado?) then (não)
+  :Realizar login ou cadastro;
+  :Retornar à revisão do pedido;
+endif
+
+:Selecionar entrega ou retirada;
+if (Entrega em endereço?) then (sim)
+  :Selecionar endereço salvo;
+else (retirada)
+  :Seguir sem endereço de entrega;
+endif
+
+:Selecionar pagamento disponível;
+
+if (Cupom informado?) then (sim)
+  :Validar elegibilidade do cupom;
+  if (Cupom válido?) then (sim)
+    :Aplicar desconto;
+  else (não)
+    :Exibir mensagem sobre o cupom;
+  endif
+endif
+
+:Conferir itens, frete, desconto e total;
+:Confirmar pedido;
+:Revalidar dados e estoque;
+
+while (Dados válidos e estoque disponível?) is (não)
+  :Exibir mensagem de validação;
+  :Corrigir dados na revisão;
+  :Confirmar pedido novamente;
+  :Revalidar dados e estoque;
+endwhile (sim)
+
+:Gravar pedido, itens e detalhes;
+:Reduzir estoque;
+:Confirmar transação;
+:Enviar e-mail de confirmação;
+:Exibir pedido confirmado;
+:Disponibilizar em Meus Pedidos;
+stop
+@enduml

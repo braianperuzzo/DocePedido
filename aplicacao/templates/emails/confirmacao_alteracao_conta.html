@@ -1,0 +1,38 @@
+{% extends 'emails/base_email.html' %}
+
+{% block titulo_oculto %}Confirme a Alteração da sua Conta{% endblock %}
+{% block titulo %}Confirme a Alteração da sua Conta{% endblock %}
+
+{% block conteudo %}
+    <p>Olá, {{ nome }}.</p>
+    <p>
+        Recebemos uma solicitação para alterar
+        {% if tipo == 'senha' %}
+            a senha da sua conta Doce Pedido.
+        {% else %}
+            os dados da sua conta Doce Pedido.
+        {% endif %}
+    </p>
+    <div style="margin:24px 0;padding:16px;border:1px solid #e8dcd1;border-radius:8px;background-color:#fff8f0;">
+        {% for item in alteracoes %}
+            <p style="margin:0 0 8px;">
+                <strong>{{ item.rotulo }}:</strong>
+                {{ item.anterior }} → {{ item.novo }}
+            </p>
+        {% endfor %}
+    </div>
+    <p>
+        A alteração ainda não foi aplicada. Use o botão abaixo para confirmar.
+    </p>
+    <p style="margin:28px 0;text-align:center;">
+        <a
+            href="{{ link }}"
+            style="display:inline-block;padding:12px 22px;border-radius:8px;background-color:#b85f7d;color:#ffffff;text-decoration:none;font-weight:bold;"
+        >
+            Confirmar Alteração
+        </a>
+    </p>
+    <p style="color:#78625e;font-size:13px;">
+        Se você não solicitou esta mudança, ignore este e-mail. Sua conta continuará como está.
+    </p>
+{% endblock %}

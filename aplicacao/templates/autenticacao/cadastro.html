@@ -1,0 +1,8 @@
+﻿{% extends 'layout/base.html' %}
+{% set estado_inicial = 'cadastrar' %}
+{% block title %}Criar Conta | Doce Pedido{% endblock %}
+{% block description %}Crie sua conta Doce Pedido para finalizar compras e acompanhar seus pedidos.{% endblock %}
+{% block content %}
+    {% include 'autenticacao/conta.html' %}
+{% endblock %}
+

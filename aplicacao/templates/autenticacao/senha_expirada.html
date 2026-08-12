@@ -1,0 +1,37 @@
+{% extends "layout/base.html" %}
+{% from "autenticacao/conta.html" import campo %}
+
+{% block title %}Atualizar Senha | Doce Pedido{% endblock %}
+{% block description %}Atualize sua senha para continuar acessando sua conta Doce Pedido.{% endblock %}
+{% block content %}
+    <section class="auth-section conta-area">
+        <div class="conta-card">
+            <header class="conta-cabecalho">
+                <h1>Atualizar Senha</h1>
+                <p>Sua senha atingiu o prazo de {{ dias }} dias. Crie uma nova senha para continuar.</p>
+            </header>
+
+            <form method="post" class="conta-formulario" novalidate>
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                {{ campo('cadastro-senha', 'senha', 'Nova Senha', 'password', 'new-password', icone='senha', descricao='criterios-senha', placeholder='Crie uma Senha') }}
+                <div id="criterios-senha" class="conta-criterios" aria-live="polite" data-password-criteria>
+                    <strong>A senha deve conter:</strong>
+                    <ul>
+                        <li data-password-rule="length">✕ Mínimo de 8 caracteres</li>
+                        <li data-password-rule="upper">✕ Uma letra maiúscula</li>
+                        <li data-password-rule="lower">✕ Uma letra minúscula</li>
+                        <li data-password-rule="number">✕ Um número</li>
+                        <li data-password-rule="special">✕ Um caractere especial</li>
+                    </ul>
+                </div>
+                {{ campo('cadastro-confirmacao', 'confirmacao_senha', 'Repita a Senha', 'password', 'new-password', icone='senha', descricao='confirmacao-mensagem', placeholder='Repita sua Senha') }}
+                <p id="confirmacao-mensagem" class="conta-mensagem" aria-live="polite"></p>
+                <button class="btn btn-primary conta-botao" type="submit">Atualizar Senha</button>
+            </form>
+
+            <p class="conta-politicas text-center mt-3">
+                Suas credenciais foram confirmadas, mas o acesso à conta só será liberado após concluir as etapas de segurança pendentes.
+            </p>
+        </div>
+    </section>
+{% endblock %}

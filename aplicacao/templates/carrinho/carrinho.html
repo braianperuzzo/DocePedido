@@ -1,0 +1,236 @@
+{% extends 'layout/base.html' %}
+{% block title %}
+    Carrinho | Doce Pedido
+{% endblock %}
+{% block body_attributes %}
+    data-analytics-event="view_cart" data-analytics-item-count="{{ quantidade_carrinho }}"
+{% endblock %}
+{% block content %}
+    <div class="container section">
+        <div class="section-heading">
+            <div>
+                <span class="eyebrow">
+                    Sua Seleção
+                </span>
+                <h1>
+                    Meu Carrinho
+                </h1>
+            </div>
+        </div>
+        {% if itens %}
+            <div class="row g-4">
+                <div class="col-lg-8">
+                    <div class="cart-list">
+                        {% for item in itens %}
+                            <article class="cart-item" data-cart-item>
+                                {% if imagem_produto_existe(item.produto.imagem) %}
+                                    <a
+                                        class="cart-product-link"
+                                        href="{{ url_for('produtos.detalhes', produto_id=item.produto.id) }}"
+                                    >
+                                        <img
+                                            loading="lazy"
+                                            decoding="async"
+                                            src="{{ url_for('static', filename=item.produto.imagem) }}"
+                                            alt="{{ item.produto.nome }}"
+                                            class="cart-thumb"
+                                        >
+                                    </a>
+                                {% else %}
+                                    <a
+                                        class="cart-product-link"
+                                        href="{{ url_for('produtos.detalhes', produto_id=item.produto.id) }}"
+                                        aria-label="Ver {{ item.produto.nome }}"
+                                    >
+                                        <span class="image-placeholder cart-thumb" aria-hidden="true">
+                                            Doce Pedido
+                                        </span>
+                                    </a>
+                                {% endif %}
+                                <div class="cart-info">
+                                    <h2>
+                                        <a
+                                            class="cart-product-link"
+                                            href="{{ url_for('produtos.detalhes', produto_id=item.produto.id) }}"
+                                        >
+                                            {{ item.produto.nome }}
+                                        </a>
+                                    </h2>
+                                    <span>
+                                        {{ item.produto.preco|moeda }} / unidade
+                                    </span>
+                                </div>
+                                <form
+                                    class="cart-quantity"
+                                    method="post"
+                                    action="{{ url_for('carrinho.atualizar', produto_id=item.produto.id) }}"
+                                >
+                                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                    <label for="quantidade-{{ item.produto.id }}">
+                                        Quantidade
+                                    </label>
+                                    <div class="quantity-row" data-quantity-control>
+                                        <button
+                                            type="button"
+                                            class="quantity-button"
+                                            data-quantity-decrease
+                                            aria-label="Diminuir quantidade"
+                                        >
+                                            −
+                                        </button>
+                                        <input
+                                            class="form-control quantity-input"
+                                            id="quantidade-{{ item.produto.id }}"
+                                            type="number"
+                                            inputmode="numeric"
+                                            name="quantidade"
+                                            min="1"
+                                            max="{{ item.produto.estoque }}"
+                                            value="{{ item.quantidade }}"
+                                            required
+                                        >
+                                        <button
+                                            type="button"
+                                            class="quantity-button"
+                                            data-quantity-increase
+                                            aria-label="Aumentar quantidade"
+                                        >
+                                            +
+                                        </button>
+                                    </div>
+                                    <p class="cart-feedback" role="status" aria-live="polite"></p>
+                                </form>
+                                <div class="cart-subtotal">
+                                    <small>
+                                        Subtotal
+                                    </small>
+                                    <strong data-cart-subtotal>
+                                        {{ item.subtotal|moeda }}
+                                    </strong>
+                                    <form
+                                        method="post"
+                                        action="{{ url_for('carrinho.remover', produto_id=item.produto.id) }}"
+                                    >
+                                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                        <button
+                                            class="cart-remove-button"
+                                            type="submit"
+                                            aria-label="Remover {{ item.produto.nome }} do carrinho"
+                                            title="Remover do carrinho"
+                                        >
+                                            <svg
+                                                viewBox="0 0 24 24"
+                                                fill="none"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                aria-hidden="true"
+                                                focusable="false"
+                                                width="20"
+                                                height="20"
+                                            >
+                                                <path
+                                                    d="M18 6L17.1991 18.0129C17.129 19.065 17.0939 19.5911 16.8667 19.99C16.6666 20.3412 16.3648 20.6235 16.0011 20.7998C15.588 21 15.0607 21 14.0062 21H9.99377C8.93927 21 8.41202 21 7.99889 20.7998C7.63517 20.6235 7.33339 20.3412 7.13332 19.99C6.90607 19.5911 6.871 19.065 6.80086 18.0129L6 6M4 6H20M16 6L15.7294 5.18807C15.4671 4.40125 15.3359 4.00784 15.0927 3.71698C14.8779 3.46013 14.6021 3.26132 14.2905 3.13878C13.9376 3 13.523 3 12.6936 3H11.3064C10.477 3 10.0624 3 9.70951 3.13878C9.39792 3.26132 9.12208 3.46013 8.90729 3.71698C8.66405 4.00784 8.53292 4.40125 8.27064 5.18807L8 6M14 10V17M10 10V17"
+                                                    stroke="currentColor"
+                                                    stroke-width="2"
+                                                    stroke-linecap="round"
+                                                    stroke-linejoin="round"
+                                                />
+                                            </svg>
+                                        </button>
+                                    </form>
+                                </div>
+                            </article>
+                        {% endfor %}
+                    </div>
+
+                    <div class="mt-3 d-flex justify-content-between flex-wrap gap-2">
+                        <a class="btn btn-outline-secondary" href="{{ url_for('produtos.catalogo') }}">
+                            Continuar Comprando
+                        </a>
+                        <form method="post" action="{{ url_for('carrinho.esvaziar') }}">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                            <button class="btn btn-link danger-link" type="submit">
+                                Esvaziar Carrinho
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <aside class="order-summary">
+                        <span class="eyebrow">
+                            Resumo
+                        </span>
+                        <h2>
+                            Total do Pedido
+                        </h2>
+                        {% if cupom %}
+                            <p class="form-text mb-2">10% de desconto aplicado com BEMVINDO.</p>
+                        {% endif %}
+                        <strong class="summary-total" data-cart-total>
+                            {{ total|moeda }}
+                        </strong>
+
+                        <section class="coupon-section coupon-section-summary" aria-labelledby="titulo-cupom">
+                            <h3 id="titulo-cupom" class="coupon-summary-title">Cupom de Desconto</h3>
+                            {% if cupom %}
+                                <div class="coupon-applied-summary">
+                                    <span><strong>BEMVINDO</strong> aplicado</span>
+                                    <form method="post" action="{{ url_for('carrinho.remover_cupom') }}">
+                                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                        <button class="btn btn-link btn-sm p-0" type="submit">Remover</button>
+                                    </form>
+                                </div>
+                            {% else %}
+                                <form
+                                    class="coupon-field-summary"
+                                    method="post"
+                                    action="{{ url_for('carrinho.aplicar_cupom') }}"
+                                    data-coupon-form
+                                    novalidate
+                                >
+                                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                    <label class="visually-hidden" for="cupom">Digite seu Cupom</label>
+                                    <div class="input-group">
+                                        <input
+                                            class="form-control form-control-sm"
+                                            id="cupom"
+                                            name="cupom"
+                                            type="text"
+                                            maxlength="30"
+                                            autocomplete="off"
+                                            placeholder="Digite seu Cupom"
+                                            aria-label="Digite seu Cupom"
+                                        >
+                                        <button
+                                            class="btn btn-outline-secondary btn-sm"
+                                            type="submit"
+                                            data-coupon-apply
+                                        >
+                                            Aplicar
+                                        </button>
+                                    </div>
+                                    <p class="form-text mb-0 w-100" role="status" aria-live="polite" data-coupon-feedback></p>
+                                </form>
+                            {% endif %}
+                        </section>
+
+                        <a class="btn btn-primary btn-lg w-100" href="{{ url_for('pedidos.revisar') }}">
+                            Revisar o Pedido
+                        </a>
+                    </aside>
+                </div>
+            </div>
+        {% else %}
+            <div class="empty-state">
+                <h2>
+                    Seu Carrinho Ainda Está Vazio
+                </h2>
+                <p>
+                    Escolha um cupcake para começar seu pedido.
+                </p>
+                <a class="btn btn-primary" href="{{ url_for('produtos.catalogo') }}">
+                    Ver Produtos
+                </a>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

@@ -1,0 +1,759 @@
+/* Ajustes específicos da Área do Cliente e do acesso à conta no cabeçalho. */
+
+.account-access {
+  display: flex;
+  min-width: 9.25rem;
+  margin-left: 0.2rem;
+  padding: 0.45rem 0.8rem;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  border-radius: 0.35rem;
+  background: var(--cor-rosa-escuro);
+  line-height: 1.1;
+}
+
+.account-access-title,
+.account-access-action,
+.account-access-button {
+  color: #ffffff;
+  text-decoration: none;
+}
+
+.account-access-title {
+  font-size: 0.86rem;
+  font-weight: 750;
+}
+
+.account-access-actions {
+  display: flex;
+  margin-top: 0.32rem;
+  align-items: center;
+  justify-content: center;
+  gap: 0.42rem;
+  white-space: nowrap;
+}
+
+.account-access-action,
+.account-access-button {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  font: inherit;
+  font-size: 0.78rem;
+  font-weight: 650;
+  line-height: 1.15;
+}
+
+.account-access-title:hover,
+.account-access-title:focus-visible,
+.account-access-action:hover,
+.account-access-action:focus-visible,
+.account-access-button:hover,
+.account-access-button:focus-visible {
+  color: #ffffff;
+  text-decoration: underline;
+  text-underline-offset: 0.18rem;
+}
+
+.account-access-form {
+  margin: 0;
+}
+
+.account-access-separator {
+  color: rgba(255, 255, 255, 0.68);
+  font-size: 0.76rem;
+}
+
+.conta-campo-conteudo input::placeholder {
+  color: var(--cor-texto-secundario);
+  opacity: 0.62;
+  transition: opacity var(--transicao-rapida);
+}
+
+.conta-campo-conteudo input:focus::placeholder {
+  opacity: 0;
+}
+
+.conta-olho-estado {
+  display: grid;
+  width: 22px;
+  height: 22px;
+  place-items: center;
+}
+
+.conta-olho-estado[hidden] {
+  display: none;
+}
+
+.conta-olho-svg {
+  display: block;
+  width: 22px;
+  height: 22px;
+}
+
+.conta-criterios {
+  display: none;
+}
+
+.conta-formulario:has(#cadastro-senha:not(:placeholder-shown)) .conta-criterios {
+  display: block;
+}
+
+.conta-botao:disabled {
+  cursor: wait;
+  color: #ffffff;
+  border-color: var(--cor-rosa-escuro);
+  background: var(--cor-rosa-escuro);
+  box-shadow: none;
+  opacity: 0.72;
+  transform: none;
+}
+
+/* Minha Conta */
+.profile-account-page {
+  max-width: 1120px;
+}
+
+.profile-account-heading {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 1.5rem;
+  margin-bottom: 1.4rem;
+}
+
+.profile-account-heading h1,
+.profile-account-heading p {
+  margin-bottom: 0;
+}
+
+.profile-account-heading p {
+  max-width: 42rem;
+  margin-top: 0.55rem;
+  color: var(--cor-texto-secundario);
+}
+
+.profile-account-nav {
+  display: inline-flex;
+  gap: 0.35rem;
+  margin-bottom: 1.35rem;
+  padding: 0.3rem;
+  border: 1px solid var(--cor-borda);
+  border-radius: 0.8rem;
+  background: var(--cor-superficie-suave);
+}
+
+.profile-account-nav a {
+  padding: 0.55rem 0.9rem;
+  border-radius: 0.58rem;
+  color: var(--cor-texto-secundario);
+  font-size: 0.9rem;
+  font-weight: 750;
+  text-decoration: none;
+}
+
+.profile-account-nav a:hover,
+.profile-account-nav a:focus-visible,
+.profile-account-nav a.active {
+  color: var(--cor-texto);
+  background: var(--cor-superficie);
+}
+
+.profile-account-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.45fr) minmax(17rem, 0.75fr);
+  gap: 1.2rem;
+  align-items: start;
+}
+
+.profile-account-side {
+  display: grid;
+  gap: 1.2rem;
+}
+
+.profile-account-card {
+  min-width: 0;
+  padding: clamp(1.2rem, 3vw, 1.75rem);
+  border: 1px solid var(--cor-borda);
+  border-radius: var(--raio);
+  background: var(--cor-superficie);
+  box-shadow: var(--sombra-suave);
+}
+
+.profile-account-card-main {
+  min-height: 100%;
+}
+
+.profile-account-card-header {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  margin-bottom: 1.2rem;
+}
+
+.profile-account-card-header h2,
+.profile-account-card-header .eyebrow {
+  margin-bottom: 0;
+}
+
+.profile-account-card-header h2 {
+  margin-top: 0.15rem;
+  font-size: clamp(1.35rem, 3vw, 1.7rem);
+}
+
+.profile-account-card-icon {
+  display: grid;
+  flex: 0 0 2.8rem;
+  width: 2.8rem;
+  height: 2.8rem;
+  place-items: center;
+  border-radius: 50%;
+  color: var(--cor-rosa-escuro);
+  background: var(--cor-rosa-claro);
+}
+
+.profile-account-data {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0;
+  margin: 0;
+}
+
+.profile-account-data div {
+  min-width: 0;
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--cor-borda);
+}
+
+.profile-account-data div:nth-child(odd) {
+  padding-right: 1rem;
+}
+
+.profile-account-data div:nth-child(even) {
+  padding-left: 1rem;
+  border-left: 1px solid var(--cor-borda);
+}
+
+.profile-account-data dt {
+  margin-bottom: 0.25rem;
+  color: var(--cor-texto-secundario);
+  font-size: 0.78rem;
+  font-weight: 750;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.profile-account-data dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+  color: var(--cor-texto);
+  font-weight: 700;
+}
+
+.profile-account-actions {
+  display: flex;
+  margin-top: 1.4rem;
+  justify-content: flex-end;
+}
+
+.profile-account-card > p {
+  color: var(--cor-texto-secundario);
+}
+
+.profile-account-order-count {
+  display: block;
+  color: var(--cor-rosa-escuro);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 2.2rem;
+  line-height: 1;
+}
+
+.profile-account-last-order {
+  margin: 0.8rem 0 1rem;
+  color: var(--cor-texto-secundario);
+  font-size: 0.9rem;
+}
+
+.profile-account-modal-dialog {
+  max-width: 520px;
+}
+
+.profile-account-modal {
+  max-height: calc(100vh - 2rem);
+  overflow: hidden;
+  color: var(--cor-texto);
+  border: 1px solid var(--cor-borda);
+  border-radius: var(--raio);
+  background: var(--cor-superficie);
+}
+
+.profile-account-modal .modal-header,
+.profile-account-modal .modal-footer {
+  flex: 0 0 auto;
+  border-color: var(--cor-borda);
+  background: var(--cor-superficie);
+}
+
+.profile-account-modal .modal-header {
+  padding: 1rem 1.2rem;
+}
+
+.profile-account-modal .modal-footer {
+  gap: 0.55rem;
+  padding: 1rem 1.2rem 1.15rem;
+}
+
+.profile-account-modal-form {
+  display: flex;
+  min-height: 0;
+  flex: 1 1 auto;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.profile-account-modal-form .modal-body {
+  min-height: 0;
+  padding: 1rem 1.2rem 1.25rem;
+  overflow-y: auto;
+}
+
+.profile-account-modal .modal-title {
+  color: var(--cor-texto);
+  font-size: 1.55rem;
+}
+
+.profile-account-modal .form-label {
+  color: var(--cor-texto);
+  font-weight: 700;
+}
+
+.profile-account-modal .form-control {
+  color: var(--cor-texto);
+  border-color: var(--cor-borda);
+  background: var(--cor-superficie);
+}
+
+/* Em campos flutuantes o placeholder não deve competir visualmente com a label. */
+.profile-account-modal .form-floating > .form-control::placeholder {
+  color: transparent;
+  opacity: 0;
+}
+
+.profile-account-modal .form-control:disabled {
+  color: var(--cor-texto-secundario);
+  background: var(--cor-superficie-suave);
+  opacity: 1;
+}
+
+.profile-account-modal .form-control:focus {
+  border-color: var(--cor-rosa-principal);
+  box-shadow: 0 0 0 0.2rem rgba(184, 95, 125, 0.13);
+}
+
+/* Validações permanecem legíveis sem transformar o campo inteiro em verde/vermelho. */
+.profile-account-modal .form-control.is-valid,
+.profile-account-modal .form-control.is-invalid,
+.profile-account-modal .form-select.is-valid,
+.profile-account-modal .form-select.is-invalid,
+.profile-account-modal .was-validated .form-control:valid,
+.profile-account-modal .was-validated .form-control:invalid,
+.profile-account-modal .was-validated .form-select:valid,
+.profile-account-modal .was-validated .form-select:invalid {
+  border-color: var(--cor-borda);
+  background-image: none;
+  box-shadow: none;
+}
+
+.profile-account-modal .form-control.is-valid:focus,
+.profile-account-modal .form-control.is-invalid:focus,
+.profile-account-modal .form-select.is-valid:focus,
+.profile-account-modal .form-select.is-invalid:focus,
+.profile-account-modal .was-validated .form-control:valid:focus,
+.profile-account-modal .was-validated .form-control:invalid:focus,
+.profile-account-modal .was-validated .form-select:valid:focus,
+.profile-account-modal .was-validated .form-select:invalid:focus {
+  border-color: var(--cor-rosa-principal);
+  box-shadow: 0 0 0 0.2rem rgba(184, 95, 125, 0.13);
+}
+
+.profile-account-modal .valid-feedback,
+.profile-account-modal .invalid-feedback {
+  color: var(--cor-texto-secundario);
+}
+
+.profile-account-modal hr {
+  margin: 1rem 0;
+  border-color: var(--cor-borda);
+  opacity: 1;
+}
+
+.profile-password-field {
+  position: relative;
+}
+
+.profile-password-field .form-control {
+  padding-right: 3rem;
+}
+
+.profile-password-toggle {
+  position: absolute;
+  top: 50%;
+  right: 0.75rem;
+  display: grid;
+  width: 2rem;
+  height: 2rem;
+  padding: 0;
+  place-items: center;
+  border: 0;
+  border-radius: 50%;
+  color: var(--cor-texto-secundario);
+  background: transparent;
+  transform: translateY(-50%);
+}
+
+.profile-password-toggle:hover,
+.profile-password-toggle:focus-visible {
+  color: var(--cor-rosa-escuro);
+  background: var(--cor-superficie-suave);
+}
+
+.profile-password-toggle [hidden] {
+  display: none;
+}
+
+.profile-password-rules {
+  padding: 0.8rem 0.9rem;
+  border: 1px solid var(--cor-borda);
+  border-radius: 0.75rem;
+  color: var(--cor-texto-secundario);
+  background: var(--cor-superficie-suave);
+  font-size: 0.84rem;
+}
+
+.profile-password-rules[hidden] {
+  display: none;
+}
+
+.profile-password-rules strong {
+  color: var(--cor-texto);
+}
+
+.profile-password-rules ul {
+  display: grid;
+  margin: 0.45rem 0 0;
+  padding: 0;
+  gap: 0.2rem;
+  list-style: none;
+}
+
+.profile-password-rules li {
+  color: var(--cor-texto-secundario);
+}
+
+.profile-password-match {
+  min-height: 1.2rem;
+  margin: 0.35rem 0 0;
+  color: var(--cor-texto-secundario);
+  font-size: 0.82rem;
+}
+
+.profile-danger-button {
+  color: var(--cor-chocolate);
+  border-color: var(--cor-borda);
+  background: var(--cor-superficie);
+}
+
+.profile-danger-button:hover,
+.profile-danger-button:focus-visible {
+  color: var(--cor-chocolate);
+  border-color: var(--cor-chocolate);
+  background: var(--cor-superficie-suave);
+}
+
+.profile-danger-icon {
+  display: inline-grid;
+  place-items: center;
+  color: var(--danger);
+}
+
+.profile-account-helper {
+  margin: 0.9rem 0 0;
+  color: var(--cor-texto-secundario);
+  font-size: 0.86rem;
+}
+
+/* Histórico e acompanhamento de pedidos */
+.orders-history-heading {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 1.25rem;
+  margin-bottom: 1.4rem;
+}
+
+.orders-history-heading p {
+  max-width: 42rem;
+  margin-bottom: 0;
+  color: var(--cor-texto-secundario);
+}
+
+.orders-history-list {
+  display: grid;
+  gap: 1rem;
+}
+
+.orders-history-card {
+  overflow: hidden;
+  border: 1px solid var(--cor-borda);
+  border-radius: var(--raio);
+  background: var(--cor-superficie);
+  box-shadow: var(--sombra-suave);
+}
+
+.orders-history-trigger {
+  display: grid;
+  width: 100%;
+  grid-template-columns: minmax(9rem, 1.2fr) minmax(7rem, 0.9fr) minmax(7rem, 0.8fr) minmax(8rem, 0.9fr) auto;
+  gap: 1rem;
+  padding: 1.15rem 1.35rem;
+  align-items: center;
+  border: 0;
+  color: var(--cor-texto);
+  background: transparent;
+  text-align: left;
+}
+
+.orders-history-trigger:hover,
+.orders-history-trigger:focus-visible,
+.orders-history-trigger[aria-expanded="true"] {
+  background: var(--cor-superficie-suave);
+}
+
+.orders-history-main strong {
+  display: block;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.15rem;
+}
+
+.orders-history-main small,
+.orders-history-meta small {
+  display: block;
+  margin-bottom: 0.15rem;
+  color: var(--cor-texto-secundario);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.orders-history-meta strong {
+  display: block;
+  overflow-wrap: anywhere;
+}
+
+.orders-history-open {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.45rem;
+  color: var(--cor-rosa-escuro);
+  font-size: 0.84rem;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.orders-history-open svg {
+  transition: transform var(--transicao-rapida);
+}
+
+.orders-history-trigger[aria-expanded="true"] .orders-history-open svg {
+  transform: rotate(180deg);
+}
+
+.orders-history-details {
+  padding: 0 1.35rem 1.35rem;
+  border-top: 1px solid var(--cor-borda);
+}
+
+.orders-history-current-status {
+  display: flex;
+  margin: 1rem 0;
+  padding: 0.85rem 1rem;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  border-radius: 0.75rem;
+  background: var(--cor-superficie-suave);
+}
+
+.orders-history-details .order-items {
+  box-shadow: none;
+}
+
+.orders-history-empty {
+  padding: clamp(2rem, 6vw, 3.5rem);
+  border: 1px dashed var(--cor-borda);
+  border-radius: var(--raio);
+  background: var(--cor-superficie);
+  text-align: center;
+}
+
+.orders-history-empty p {
+  color: var(--cor-texto-secundario);
+}
+
+@media (min-width: 1200px) {
+  #menu > .navbar-nav > .nav-item {
+    box-sizing: border-box;
+    display: flex;
+    height: 48px;
+    align-items: center;
+  }
+
+  .account-access {
+    height: 48px;
+  }
+}
+
+@media (max-width: 1199.98px) {
+  #menu .navbar-nav {
+    align-items: center !important;
+    text-align: center;
+  }
+
+  #menu .navbar-nav > .nav-item:not(.account-access) {
+    width: 100%;
+    justify-content: center;
+  }
+
+  #menu .nav-link,
+  #menu .dropdown-trigger {
+    justify-content: center;
+    margin-inline: auto;
+    text-align: center;
+  }
+
+  #menu .header-dropdown-menu a,
+  #menu .header-dropdown-menu button,
+  #menu .account-name {
+    text-align: center;
+  }
+
+  .account-access {
+    width: fit-content;
+    min-width: 9rem;
+    margin: 0.45rem auto;
+    align-items: center;
+  }
+
+  .account-access-actions {
+    justify-content: center;
+  }
+
+  #menu .search-nav-item {
+    margin: 0.3rem 0 0;
+    padding: 0.6rem 0.7rem 0;
+  }
+
+  #menu .header-search {
+    margin-inline: auto;
+  }
+
+  #menu .theme-toggle {
+    margin: 0.15rem auto 0;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 991.98px) {
+  .profile-account-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .profile-account-side {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .orders-history-trigger {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .orders-history-open {
+    justify-content: flex-start;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .profile-account-heading,
+  .orders-history-heading {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .profile-account-heading .btn,
+  .orders-history-heading .btn {
+    align-self: flex-start;
+  }
+
+  .profile-account-side,
+  .profile-account-data {
+    grid-template-columns: 1fr;
+  }
+
+  .profile-account-data div:nth-child(odd),
+  .profile-account-data div:nth-child(even) {
+    padding-right: 0;
+    padding-left: 0;
+    border-left: 0;
+  }
+
+  .profile-account-actions {
+    justify-content: stretch;
+  }
+
+  .profile-account-actions .btn {
+    width: 100%;
+  }
+
+  .orders-history-current-status {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .profile-account-nav {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    width: 100%;
+  }
+
+  .profile-account-nav a {
+    text-align: center;
+  }
+
+  .orders-history-trigger {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+
+  .orders-history-details {
+    padding-inline: 0.85rem;
+  }
+
+  .profile-account-modal {
+    max-height: calc(100vh - 1rem);
+  }
+
+  .profile-account-modal .modal-footer {
+    padding-bottom: max(1rem, env(safe-area-inset-bottom));
+  }
+}
+
+@media (max-width: 480px) {
+  .conta-acoes-auxiliares {
+    align-items: center;
+    flex-wrap: nowrap;
+  }
+}

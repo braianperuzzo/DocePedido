@@ -1,0 +1,181 @@
+{% extends 'layout/base.html' %}
+
+{% block title %}Meus Pedidos | Doce Pedido{% endblock %}
+{% block description %}Acompanhe o histórico e os detalhes dos seus pedidos na Doce Pedido.{% endblock %}
+
+{% block structured_data %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/conta.css') }}">
+{% endblock %}
+
+{% block content %}
+    <section class="container section account-resource-page orders-history-page">
+        <div class="orders-history-heading">
+            <div>
+                <span class="eyebrow">Sua Conta</span>
+                <h1>Meus Pedidos</h1>
+                <p>Acompanhe seus pedidos e abra cada pedido para consultar os detalhes.</p>
+            </div>
+            <a class="btn btn-outline-secondary" href="{{ url_for('conta.perfil') }}">
+                Meus Dados
+            </a>
+        </div>
+
+        {% set pagina_conta = 'pedidos' %}
+        {% include 'conta/_nav.html' %}
+
+        {% if pedidos %}
+            <div class="orders-history-list">
+                {% for pedido in pedidos %}
+                    <article class="orders-history-card">
+                        <button
+                            class="orders-history-trigger"
+                            type="button"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#pedido-{{ pedido.id }}"
+                            aria-expanded="false"
+                            aria-controls="pedido-{{ pedido.id }}"
+                        >
+                            <span class="orders-history-main">
+                                <small>Pedido</small>
+                                <strong>nº {{ pedido.id }}</strong>
+                            </span>
+                            <span class="orders-history-meta">
+                                <small>Data</small>
+                                <strong>{{ pedido.data_pedido.strftime('%d/%m/%Y') }}</strong>
+                            </span>
+                            <span class="orders-history-meta">
+                                <small>Valor</small>
+                                <strong>{{ pedido.valor_total|moeda }}</strong>
+                            </span>
+                            <span class="orders-history-meta">
+                                <small>Situação</small>
+                                <span class="status-badge">{{ pedido.status }}</span>
+                            </span>
+                            <span class="orders-history-open">
+                                Ver Detalhes
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="18"
+                                    height="18"
+                                    viewBox="0 0 20 20"
+                                    fill="none"
+                                    aria-hidden="true"
+                                    focusable="false"
+                                >
+                                    <path
+                                        transform="rotate(180 10 10)"
+                                        stroke="currentColor"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="2"
+                                        d="M10 18V2m0 0l7 7m-7-7L3 9"
+                                    ></path>
+                                </svg>
+                            </span>
+                        </button>
+
+                        <div class="collapse orders-history-details" id="pedido-{{ pedido.id }}">
+                            <div class="orders-history-current-status">
+                                <div>
+                                    <small>Situação atual</small>
+                                    <strong>{{ pedido.status }}</strong>
+                                </div>
+                                <span>
+                                    Realizado em {{ pedido.data_pedido.strftime('%d/%m/%Y às %H:%M') }}
+                                </span>
+                            </div>
+
+                            {% if pedido.detalhes_checkout %}
+                                <div class="orders-history-current-status">
+                                    <div>
+                                        <small>Recebimento e pagamento</small>
+                                        <strong>
+                                            {{ pedido.detalhes_checkout.tipo_entrega }} · {{ pedido.detalhes_checkout.forma_pagamento }}
+                                        </strong>
+                                    </div>
+                                    <span>Frete grátis</span>
+                                </div>
+                            {% endif %}
+
+                            <div class="order-items">
+                                {% for item in pedido.itens %}
+                                    {% if item.produto.ativo %}
+                                        <a
+                                            class="order-item text-reset text-decoration-none"
+                                            href="{{ url_for('produtos.detalhes', produto_id=item.produto.id) }}"
+                                            aria-label="Abrir {{ item.produto.nome }}"
+                                        >
+                                            {% if imagem_produto_existe(item.produto.imagem) %}
+                                                <img
+                                                    loading="lazy"
+                                                    decoding="async"
+                                                    src="{{ url_for('static', filename=item.produto.imagem) }}"
+                                                    alt="{{ item.produto.nome }}"
+                                                >
+                                            {% else %}
+                                                <span class="image-placeholder" aria-hidden="true">
+                                                    Doce Pedido
+                                                </span>
+                                            {% endif %}
+                                            <div>
+                                                <strong>{{ item.produto.nome }}</strong>
+                                                <small>
+                                                    {{ item.quantidade }} × {{ item.valor_unitario|moeda }}
+                                                </small>
+                                            </div>
+                                            <strong>{{ item.subtotal|moeda }}</strong>
+                                        </a>
+                                    {% else %}
+                                        <div class="order-item">
+                                            {% if imagem_produto_existe(item.produto.imagem) %}
+                                                <img
+                                                    loading="lazy"
+                                                    decoding="async"
+                                                    src="{{ url_for('static', filename=item.produto.imagem) }}"
+                                                    alt="{{ item.produto.nome }}"
+                                                >
+                                            {% else %}
+                                                <span class="image-placeholder" aria-hidden="true">
+                                                    Doce Pedido
+                                                </span>
+                                            {% endif %}
+                                            <div>
+                                                <strong>{{ item.produto.nome }}</strong>
+                                                <small>
+                                                    {{ item.quantidade }} × {{ item.valor_unitario|moeda }} · Indisponível
+                                                </small>
+                                            </div>
+                                            <strong>{{ item.subtotal|moeda }}</strong>
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
+                                <div class="order-total">
+                                    <span>Total do Pedido</span>
+                                    <strong>{{ pedido.valor_total|moeda }}</strong>
+                                </div>
+                            </div>
+
+                            <div class="d-flex justify-content-end mt-3">
+                                <a
+                                    class="btn btn-outline-secondary"
+                                    href="{{ url_for('pedidos.detalhes', pedido_id=pedido.id) }}"
+                                >
+                                    Abrir Pedido
+                                </a>
+                            </div>
+                        </div>
+                    </article>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="orders-history-empty">
+                <span class="eyebrow">Histórico Vazio</span>
+                <h2>Você Ainda Não Realizou Nenhum Pedido</h2>
+                <p>Quando fizer seu primeiro pedido, ele aparecerá aqui.</p>
+                <a class="btn btn-primary" href="{{ url_for('produtos.catalogo') }}">
+                    Conhecer Produtos
+                </a>
+            </div>
+        {% endif %}
+    </section>
+{% endblock %}

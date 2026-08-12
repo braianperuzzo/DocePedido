@@ -1,0 +1,186 @@
+{% extends 'layout/base.html' %}
+{% block title %}
+    {{ produto.nome }} | Doce Pedido
+{% endblock %}
+{% block description %}
+    {{ produto.descricao }}
+{% endblock %}
+{% block canonical %}
+    {{ url_publica_para('produtos.detalhes', produto_id=produto.id) }}
+{% endblock %}
+{% block social_image %}
+    {{
+        url_publica(url_for('static', filename=produto.imagem))
+        if imagem_produto_existe(produto.imagem)
+        else url_publica(url_for('static', filename='imagens/logo.png'))
+    }}
+{% endblock %}
+{% block robots %}index, follow{% endblock %}
+{% block og_type %}
+    product
+{% endblock %}
+{% block structured_data %}
+    {% set produto_url = url_publica_para('produtos.detalhes', produto_id=produto.id) %}
+    {% set product_schema = {
+        '@context': 'https://schema.org',
+        '@type': 'Product',
+        'name': produto.nome,
+        'description': produto.descricao,
+        'image': url_publica(url_for('static', filename=produto.imagem)) if imagem_produto_existe(produto.imagem) else none,
+        'url': produto_url,
+        'offers': {
+            '@type': 'Offer',
+            'url': produto_url,
+            'price': produto.preco|string,
+            'priceCurrency': 'BRL',
+            'availability': 'https://schema.org/InStock' if produto.estoque > 0 else 'https://schema.org/OutOfStock'
+        }
+    } %}
+    {% set breadcrumb_schema = {
+        '@context': 'https://schema.org',
+        '@type': 'BreadcrumbList',
+        'itemListElement': [
+            {'@type': 'ListItem', 'position': 1, 'name': 'Início', 'item': url_publica_para('pagina_inicial.inicio')},
+            {'@type': 'ListItem', 'position': 2, 'name': 'Produtos', 'item': url_publica_para('produtos.catalogo')},
+            {'@type': 'ListItem', 'position': 3, 'name': produto.nome, 'item': produto_url}
+        ]
+    } %}
+    <script type="application/ld+json">
+        {{ [product_schema, breadcrumb_schema]|tojson }}
+    </script>
+{% endblock %}
+{% block body_attributes %}
+    data-analytics-event="view_item"
+    data-analytics-item-id="{{ produto.id }}"
+    data-analytics-item-name="{{ produto.nome }}"
+{% endblock %}
+{% block content %}
+    <div class="container product-detail">
+        <nav class="product-breadcrumb" aria-label="Navegação estrutural">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="{{ url_for('pagina_inicial.inicio') }}">
+                        Início
+                    </a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a href="{{ url_for('produtos.catalogo') }}">
+                        Produtos
+                    </a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">
+                    {{ produto.nome }}
+                </li>
+            </ol>
+        </nav>
+        <div class="product-detail-grid">
+            <div class="product-detail-media">
+                {% if imagem_produto_existe(produto.imagem) %}
+                    <img
+                        class="product-detail-image"
+                        width="640"
+                        height="640"
+                        src="{{ url_for('static', filename=produto.imagem) }}"
+                        alt="{{ produto.nome }}"
+                    >
+                {% else %}
+                    <div class="image-placeholder detail-placeholder">
+                        Doce Pedido
+                    </div>
+                {% endif %}
+            </div>
+            <div class="product-detail-content">
+                <span class="product-category">
+                    {{ produto.categoria.nome }}
+                </span>
+                <h1 class="product-detail-title">
+                    {{ produto.nome }}
+                </h1>
+                <p class="product-detail-description">
+                    {{ produto.descricao }}
+                </p>
+                <strong class="detail-price">
+                    {{ produto.preco_formatado }}
+                </strong>
+                <p class="availability {% if produto.estoque > 0 %}available{% endif %}">
+                    {% if produto.estoque > 0 %}
+                        <span aria-hidden="true">●</span> Disponível
+                    {% else %}
+                        <span aria-hidden="true">●</span> Indisponível
+                    {% endif %}
+                </p>
+                {% if produto.estoque > 0 %}
+                    <form
+                        class="purchase-form"
+                        method="post"
+                        action="{{ url_for('carrinho.adicionar', produto_id=produto.id) }}"
+                        data-add-to-cart
+                    >
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                        <div>
+                            <label class="form-label" for="quantidade">
+                                Quantidade
+                            </label>
+                            <div class="quantity-row" data-quantity-control>
+                                <button
+                                    type="button"
+                                    class="quantity-button"
+                                    data-quantity-decrease
+                                    aria-label="Diminuir quantidade"
+                                >
+                                    −
+                                </button>
+                                <input
+                                    class="form-control quantity-input"
+                                    id="quantidade"
+                                    name="quantidade"
+                                    type="number"
+                                    inputmode="numeric"
+                                    min="1"
+                                    max="{{ produto.estoque }}"
+                                    value="1"
+                                    required
+                                >
+                                <button
+                                    type="button"
+                                    class="quantity-button"
+                                    data-quantity-increase
+                                    aria-label="Aumentar quantidade"
+                                >
+                                    +
+                                </button>
+                            </div>
+                        </div>
+                        <button
+                            class="btn btn-primary purchase-cta"
+                            type="submit"
+                            aria-label="Carrinho"
+                            title="Carrinho"
+                        >
+                            <svg
+                                class="icon"
+                                width="20"
+                                height="20"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg"
+                                aria-hidden="true"
+                                focusable="false"
+                            >
+                                <path
+                                    d="M6.29977 5H21L19 12H7.37671M20 16H8L6 3H3M9 20C9 20.5523 8.55228 21 8 21C7.44772 21 7 20.5523 7 20C7 19.4477 7.44772 19 8 19C8.55228 19 9 19.4477 9 20ZM20 20C20 20.5523 19.5523 21 19 21C18.4477 21 18 20.5523 18 20C18 19.4477 18.4477 19 19 19C19.5523 19 20 19.4477 20 20Z"
+                                    stroke="currentColor"
+                                    stroke-width="2"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                >
+                                </path>
+                            </svg>
+                            <span>Carrinho</span>
+                        </button>
+                    </form>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

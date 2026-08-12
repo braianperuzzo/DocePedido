@@ -1,0 +1,49 @@
+@startuml
+actor Cliente
+boundary "Interface Web" as Web
+control "Controlador de Pedidos" as Pedidos
+control "Serviço de Cupons" as Cupom
+database "Banco de Dados" as Banco
+participant "Serviço de E-mail" as Email
+
+Cliente -> Web : abrir revisão do pedido
+Web -> Pedidos : GET /pedidos/revisar
+Pedidos -> Banco : consultar carrinho e endereços
+Banco --> Pedidos : produtos e endereços
+
+opt cupom informado
+  Pedidos -> Cupom : validar cupom
+  Cupom -> Banco : consultar histórico do CPF
+  Banco --> Cupom : pedidos anteriores
+  Cupom --> Pedidos : elegibilidade e desconto
+end
+
+Pedidos --> Web : resumo, frete, desconto e total
+Cliente -> Web : confirmar recebimento e pagamento
+Web -> Pedidos : POST /pedidos/confirmar
+Pedidos -> Banco : revalidar produtos e estoque
+Banco --> Pedidos : estado atual dos itens
+
+alt dados inválidos ou estoque insuficiente
+  Pedidos --> Web : mensagem de validação
+  Web --> Cliente : manter revisão para correção
+else pedido válido
+  opt cupom aplicado
+    Pedidos -> Cupom : revalidar elegibilidade
+    Cupom -> Banco : consultar histórico do CPF
+    Banco --> Cupom : histórico atualizado
+    Cupom --> Pedidos : desconto final
+  end
+
+  Pedidos -> Banco : iniciar transação
+  Pedidos -> Banco : gravar Pedido, ItemPedido e DetalhePedido
+  Pedidos -> Banco : reduzir estoque
+  Pedidos -> Banco : confirmar transação
+  Banco --> Pedidos : pedido persistido
+
+  Pedidos -> Email : Confirmar do pedido
+  Email --> Pedidos : resultado do envio
+  Pedidos --> Web : redirecionar para confirmação
+  Web --> Cliente : exibir pedido confirmado
+end
+@enduml

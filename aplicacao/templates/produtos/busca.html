@@ -1,0 +1,48 @@
+{% extends 'layout/base.html' %}
+{% block title %}
+    Buscar | Doce Pedido
+{% endblock %}
+{% block description %}
+    Resultados da busca interna de produtos da Doce Pedido.
+{% endblock %}
+{% block robots %}noindex, follow{% endblock %}
+{% block body_attributes %}
+    data-analytics-event="search" data-analytics-result-count="{{ produtos|length }}"
+{% endblock %}
+{% block content %}
+    <header class="page-header">
+        <div class="container">
+            <span class="eyebrow">
+                Busca de Produtos
+            </span>
+            <h1>
+                Resultados para “{{ termo }}”
+            </h1>
+            <p>
+                {% include 'produtos/_result_count.html' %}
+            </p>
+        </div>
+    </header>
+    <section class="container search-results-section">
+        <div class="search-results-grid products-grid">
+            {% for produto in produtos %}
+                {% include 'produtos/_card.html' %}
+            {% else %}
+                <div class="empty-state">
+                    <span class="empty-icon" aria-hidden="true">
+                        ⌕
+                    </span>
+                    <h2>
+                        Nenhum Produto Encontrado
+                    </h2>
+                    <p>
+                        Tente outro sabor ou conheça todo o nosso catálogo.
+                    </p>
+                    <a class="btn btn-primary" href="{{ url_for('produtos.catalogo') }}">
+                        Ver Todos os Produtos
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+    </section>
+{% endblock %}

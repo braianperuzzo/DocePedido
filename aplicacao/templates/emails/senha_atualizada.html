@@ -1,0 +1,14 @@
+{% extends "emails/base_email.html" %}
+
+{% block titulo_oculto %}Senha Atualizada - Doce Pedido{% endblock %}
+{% block titulo %}Senha Atualizada{% endblock %}
+{% block conteudo %}
+    <p>Olá, <strong style="color:#94435f;">{{ nome }}</strong>,</p>
+    <p>
+        A senha da sua conta na <strong>Doce Pedido</strong> foi atualizada com sucesso.
+    </p>
+    <p>
+        Se você não realizou esta alteração, acesse a Área do Cliente e use a opção
+        <strong>Esqueceu a Senha?</strong> para recuperar o acesso.
+    </p>
+{% endblock %}

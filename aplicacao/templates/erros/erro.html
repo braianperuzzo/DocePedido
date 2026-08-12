@@ -1,0 +1,28 @@
+{% extends 'layout/base.html' %}
+{% block title %}
+    {{ codigo }} — {{ titulo }} | Doce Pedido
+{% endblock %}
+{% block description %}
+    {{ mensagem }}
+{% endblock %}
+{% block content %}
+    <section class="container section text-center error-page">
+        <span class="eyebrow">
+            Erro {{ codigo }}
+        </span>
+        <h1>
+            {{ titulo }}
+        </h1>
+        <p class="lead">
+            {{ mensagem }}
+        </p>
+        <div class="d-flex justify-content-center flex-wrap gap-2">
+            <a class="btn btn-primary" href="{{ url_for('pagina_inicial.inicio') }}">
+                Ir Para o Início
+            </a>
+            <a class="btn btn-outline-secondary" href="{{ url_for('produtos.catalogo') }}">
+                Ver Produtos
+            </a>
+        </div>
+    </section>
+{% endblock %}

@@ -1,0 +1,45 @@
+{% extends 'layout/base.html' %}
+{% block title %}
+    Sobre a Doce Pedido | Doce Pedido
+{% endblock %}
+{% block description %}
+    Conheça a proposta da Doce Pedido, com cupcakes e kits preparados com cuidado.
+{% endblock %}
+{% block canonical %}
+    {{ url_publica_para('institucional.sobre') }}
+{% endblock %}
+{% block robots %}index, follow{% endblock %}
+{% block content %}
+    <article class="container section legal-page">
+        <nav aria-label="Navegação estrutural">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="{{ url_for('pagina_inicial.inicio') }}">
+                        Início
+                    </a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">
+                    Sobre a Doce Pedido
+                </li>
+            </ol>
+        </nav>
+        <span class="eyebrow">
+            Nossa Essência
+        </span>
+        <h1>
+            Sobre a Doce Pedido
+        </h1>
+        <p class="lead">
+            A Doce Pedido reúne cupcakes e kits pensados para adoçar diferentes momentos.
+        </p>
+        <h2>
+            Produção Cuidadosa
+        </h2>
+        <p>
+            Os produtos são preparados com atenção aos sabores, à apresentação e aos detalhes de cada pedido.
+        </p>
+        <a class="btn btn-primary" href="{{ url_for('produtos.catalogo') }}">
+            Conhecer os Produtos
+        </a>
+    </article>
+{% endblock %}

@@ -1,0 +1,27 @@
+{% set pagina_conta = pagina_conta|default('dados') %}
+<nav class="profile-account-nav" aria-label="Seções da conta" data-account-nav>
+    <a
+        href="{{ url_for('conta.perfil') }}"
+        {% if pagina_conta == 'dados' %}class="active" aria-current="page"{% endif %}
+    >
+        Meus Dados
+    </a>
+    <a
+        href="{{ url_for('recursos_conta.enderecos') }}"
+        {% if pagina_conta == 'enderecos' %}class="active" aria-current="page"{% endif %}
+    >
+        Endereços
+    </a>
+    <a
+        href="{{ url_for('recursos_conta.favoritos') }}"
+        {% if pagina_conta == 'favoritos' %}class="active" aria-current="page"{% endif %}
+    >
+        Cupcakes Favoritos
+    </a>
+    <a
+        href="{{ url_for('pedidos.listar') }}"
+        {% if pagina_conta == 'pedidos' %}class="active" aria-current="page"{% endif %}
+    >
+        Meus Pedidos
+    </a>
+</nav>

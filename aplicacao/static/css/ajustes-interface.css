@@ -1,0 +1,257 @@
+/* Ajustes finais de consistência visual compartilhados pela loja e pela Área do Cliente. */
+
+/* Campos mantêm a identidade da Doce Pedido. Estados de validação podem usar
+ícones/mensagens sem transformar o próprio campo em verde ou vermelho. */
+.form-control.is-valid,
+.form-select.is-valid,
+.was-validated .form-control:valid,
+.was-validated .form-select:valid,
+.form-control.is-invalid,
+.form-select.is-invalid,
+.was-validated .form-control:invalid,
+.was-validated .form-select:invalid {
+  border-color: var(--cor-borda) !important;
+  background-image: none !important;
+}
+
+.form-control.is-valid:focus,
+.form-select.is-valid:focus,
+.was-validated .form-control:valid:focus,
+.was-validated .form-select:valid:focus,
+.form-control.is-invalid:focus,
+.form-select.is-invalid:focus,
+.was-validated .form-control:invalid:focus,
+.was-validated .form-select:invalid:focus {
+  border-color: var(--cor-rosa-principal) !important;
+  box-shadow: 0 0 0 0.2rem rgba(184, 95, 125, 0.13) !important;
+}
+
+/* Ações destrutivas continuam identificáveis pelo texto/ícone, sem botões vermelhos. */
+.btn-danger,
+.btn-outline-danger {
+  --bs-btn-color: var(--cor-chocolate);
+  --bs-btn-bg: transparent;
+  --bs-btn-border-color: var(--cor-chocolate);
+  --bs-btn-hover-color: #fff;
+  --bs-btn-hover-bg: var(--cor-chocolate);
+  --bs-btn-hover-border-color: var(--cor-chocolate);
+  --bs-btn-active-color: #fff;
+  --bs-btn-active-bg: var(--cor-chocolate);
+  --bs-btn-active-border-color: var(--cor-chocolate);
+}
+
+/* Carrinho: campo e botão formam uma única linha com a largura total do resumo. */
+.coupon-field-summary {
+  display: grid;
+  width: 100%;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0.45rem;
+}
+
+.coupon-field-summary .input-group {
+  display: flex;
+  width: 100%;
+  flex-wrap: nowrap;
+}
+
+.coupon-field-summary .form-control {
+  width: 100%;
+  min-width: 0;
+}
+
+.coupon-field-summary .input-group .form-control {
+  flex: 1 1 auto;
+}
+
+.coupon-field-summary .btn {
+  min-width: 92px;
+}
+
+.coupon-field-summary .input-group .btn {
+  width: auto;
+  flex: 0 0 auto;
+  justify-self: auto;
+  white-space: nowrap;
+}
+
+.coupon-field-summary [data-coupon-feedback] {
+  width: 100%;
+}
+
+/* Produto: imagem mais compacta e ações principais na mesma linha no desktop. */
+@media (min-width: 992px) {
+  .product-detail-grid {
+    align-items: start;
+  }
+
+  .product-detail-media {
+    align-self: start;
+  }
+
+  .product-detail-image,
+  .detail-placeholder {
+    width: 100%;
+    height: clamp(330px, 29vw, 410px);
+    max-height: 410px;
+    aspect-ratio: auto;
+    object-fit: cover;
+  }
+
+  .purchase-form {
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .purchase-cta,
+  .favorite-detail-toggle {
+    width: auto;
+    min-height: 46px;
+    margin-top: 1.9rem;
+  }
+
+  .favorite-detail-toggle {
+    display: inline-flex;
+    flex: 0 0 auto;
+    height: 46px;
+    padding: 0.66rem 1rem;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    font-weight: 750;
+  }
+}
+
+.purchase-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.purchase-cta .icon,
+.favorite-detail-toggle svg {
+  flex: 0 0 auto;
+}
+
+@media (max-width: 991.98px) {
+  .purchase-cta,
+  .favorite-detail-toggle {
+    display: inline-flex;
+    width: min(100%, 320px);
+    min-height: 46px;
+    margin-top: 0;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding-inline: 1rem;
+  }
+}
+
+/* Ícone iFood em SVG: usa o wordmark dentro do próprio SVG em vez do saco genérico. */
+.ifood-fab svg {
+  width: 30px;
+  height: 18px;
+}
+
+.social-links a[aria-label="iFood"] svg {
+  width: 30px;
+  height: 18px;
+}
+
+/* Área do Cliente: todas as abas usam a mesma largura, cabeçalho e navegação. */
+.profile-account-page,
+.account-resource-page,
+.orders-history-page {
+  width: 100%;
+  max-width: 1120px;
+}
+
+.profile-account-heading,
+.account-resource-heading,
+.orders-history-heading {
+  min-height: 104px;
+  margin-bottom: 1.35rem;
+  align-items: flex-end;
+}
+
+.profile-account-nav {
+  display: grid;
+  width: 100%;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.35rem;
+  margin-bottom: 1.35rem;
+}
+
+.profile-account-nav a {
+  display: flex;
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+/* Modais da conta: labels sempre acima do valor e rodapé com respiro. */
+.profile-account-modal .form-floating > .form-control,
+.profile-account-modal .form-floating > .form-select {
+  min-height: 58px;
+  padding-top: 1.6rem;
+  padding-bottom: 0.45rem;
+}
+
+.profile-account-modal .form-floating > label {
+  z-index: 2;
+  height: auto;
+  padding-top: 0.5rem;
+  padding-bottom: 0;
+  color: var(--cor-texto-secundario);
+  pointer-events: none;
+}
+
+.profile-account-modal .modal-footer {
+  gap: 0.6rem;
+  padding: 0.95rem 1rem 1.15rem;
+}
+
+.profile-account-modal-dialog {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+.profile-password-rules[hidden] {
+  display: none !important;
+}
+
+.profile-password-rules:not([hidden]) {
+  display: block;
+}
+
+.profile-password-rules li {
+  list-style: none;
+  margin: 0.25rem 0;
+}
+
+.profile-password-rules ul {
+  padding-left: 0;
+}
+
+/* Feedbacks de formulário permanecem legíveis sem pintar o campo. */
+.address-cep-feedback.is-success,
+.address-cep-feedback.is-error {
+  color: var(--cor-texto-secundario);
+}
+
+@media (max-width: 767.98px) {
+  .profile-account-heading,
+  .account-resource-heading,
+  .orders-history-heading {
+    min-height: 0;
+    align-items: stretch;
+  }
+
+  .profile-account-nav {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .coupon-field-summary .input-group .btn {
+    width: auto;
+  }
+}

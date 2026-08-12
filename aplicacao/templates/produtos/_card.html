@@ -1,0 +1,130 @@
+<div class="product-card-wrap d-flex{% if card_home|default(false) %} home-product-card{% endif %}">
+    <article class="product-card card w-100">
+        <a href="{{ url_for('produtos.detalhes', produto_id=produto.id) }}" class="product-image-link">
+            {% if imagem_produto_existe(produto.imagem) %}
+                <img
+                    loading="lazy"
+                    decoding="async"
+                    src="{{ url_for('static', filename=produto.imagem) }}"
+                    width="640"
+                    height="640"
+                    class="product-image"
+                    alt="{{ produto.nome }}"
+                >
+            {% else %}
+                <span class="image-placeholder">
+                    Doce Pedido
+                </span>
+            {% endif %}
+        </a>
+        <div class="card-body d-flex flex-column">
+            <span class="product-category">
+                {{ produto.categoria.nome }}
+            </span>
+            <h3>
+                <a class="product-title-link" href="{{ url_for('produtos.detalhes', produto_id=produto.id) }}">
+                    {{ produto.nome }}
+                </a>
+            </h3>
+            <p class="product-description">
+                {{ produto.descricao }}
+            </p>
+            <div class="mt-auto product-meta">
+                <div>
+                    <strong class="product-price">
+                        {{ produto.preco_formatado }}
+                    </strong>
+                    <small class="stock-label">
+                        {% if produto.estoque > 0 %}
+                            Disponível
+                        {% else %}
+                            Indisponível
+                        {% endif %}
+                    </small>
+                </div>
+                <div class="product-actions">
+                    <a
+                        class="btn btn-outline-secondary icon-action"
+                        href="{{ url_for('produtos.detalhes', produto_id=produto.id) }}"
+                        aria-label="Ver Produto"
+                        title="Ver Produto"
+                    >
+                        <svg
+                            class="icon"
+                            width="20"
+                            height="20"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                            aria-hidden="true"
+                            focusable="false"
+                        >
+                            <path
+                                d="M15.0007 12C15.0007 13.6569 13.6576 15 12.0007 15C10.3439 15 9.00073 13.6569 9.00073 12C9.00073 10.3431 10.3439 9 12.0007 9C13.6576 9 15.0007 10.3431 15.0007 12Z"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                            >
+                            </path>
+                            <path
+                                d="M12.0012 5C7.52354 5 3.73326 7.94288 2.45898 12C3.73324 16.0571 7.52354 19 12.0012 19C16.4788 19 20.2691 16.0571 21.5434 12C20.2691 7.94291 16.4788 5 12.0012 5Z"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                            >
+                            </path>
+                        </svg>
+                        {% if card_home|default(false) %}
+                            <span>
+                                Ver Produto
+                            </span>
+                        {% endif %}
+                    </a>
+                    {% if produto.estoque > 0 %}
+                        <form
+                            method="post"
+                            action="{{ url_for('carrinho.adicionar', produto_id=produto.id) }}"
+                            data-add-to-cart
+                        >
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                            <input type="hidden" name="quantidade" value="1">
+                            <button
+                                class="btn btn-primary icon-action text-nowrap"
+                                type="submit"
+                                aria-label="Carrinho"
+                                title="Carrinho"
+                            >
+                                <svg
+                                    class="icon"
+                                    width="20"
+                                    height="20"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    aria-hidden="true"
+                                    focusable="false"
+                                >
+                                    <path
+                                        d="M6.29977 5H21L19 12H7.37671M20 16H8L6 3H3M9 20C9 20.5523 8.55228 21 8 21C7.44772 21 7 20.5523 7 20C7 19.4477 7.44772 19 8 19C8.55228 19 9 19.4477 9 20ZM20 20C20 20.5523 19.5523 21 19 21C18.4477 21 18 20.5523 18 20C18 19.4477 18.4477 19 19 19C19.5523 19 20 19.4477 20 20Z"
+                                        stroke="currentColor"
+                                        stroke-width="2"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                    >
+                                    </path>
+                                </svg>
+                                {% if card_home|default(false) %}
+                                    <span>
+                                        Adicionar
+                                    </span>
+                                {% endif %}
+                            </button>
+                        </form>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </article>
+</div>

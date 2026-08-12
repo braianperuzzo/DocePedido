@@ -1,0 +1,81 @@
+{% extends 'layout/base.html' %}
+{% block title %}
+    Termos de Uso | Doce Pedido
+{% endblock %}
+{% block description %}
+    Consulte as condições gerais para cadastro, produtos, cupom e pedidos na Doce Pedido.
+{% endblock %}
+{% block canonical %}
+    {{ url_publica_para('institucional.termos') }}
+{% endblock %}
+{% block robots %}index, follow{% endblock %}
+{% block content %}
+    <article class="container section legal-page">
+        <span class="eyebrow">
+            Condições da Loja
+        </span>
+        <h1>
+            Termos de Uso
+        </h1>
+        <p class="lead">
+            Ao utilizar a loja, informe dados corretos e mantenha sua conta protegida.
+        </p>
+        <h2>
+            Cadastro e Acesso
+        </h2>
+        <p>
+            O cliente é responsável pelos dados informados e por não compartilhar sua
+            senha. O cadastro depende da confirmação do e-mail antes do primeiro acesso.
+            O CPF informado fica vinculado à conta e não pode ser alterado depois pela área Minha Conta.
+        </p>
+        <h2>
+            Produtos e Estoque
+        </h2>
+        <p>
+            Produtos e quantidades dependem da disponibilidade apresentada pela loja.
+            O estoque é validado novamente quando o pedido é confirmado.
+        </p>
+        <h2>
+            Cupom BEMVINDO
+        </h2>
+        <p>
+            O cupom BEMVINDO concede 10% de desconto somente na primeira compra vinculada
+            ao CPF. A elegibilidade é verificada novamente no fechamento do pedido.
+        </p>
+        <h2>
+            Pedidos
+        </h2>
+        <p>
+            Antes de confirmar, o cliente revisa itens, quantidades, valores, descontos,
+            forma de recebimento e endereço quando houver entrega. O fluxo atual utiliza
+            frete grátis e Pagamento Presencial na entrega ou retirada.
+        </p>
+        <h2>
+            Pagamento On-line
+        </h2>
+        <p>
+            Pix e cartão on-line aparecem como opções indisponíveis. A aplicação não
+            recebe nem armazena dados de cartão.
+        </p>
+        <h2>
+            Uso da Plataforma
+        </h2>
+        <p>
+            O site deve ser utilizado para consultar produtos e acessar os recursos
+            disponibilizados. Tentativas de comprometer a segurança ou a disponibilidade
+            da aplicação não fazem parte do uso previsto.
+        </p>
+        {% if informacoes_site.email %}
+            <h2>
+                Contato
+            </h2>
+            <p>
+                Dúvidas podem ser encaminhadas para
+                <a href="mailto:{{ informacoes_site.email }}">
+                    {{ informacoes_site.email }}
+                </a>
+                .
+            </p>
+        {% endif %}
+    </article>
+{% endblock %}

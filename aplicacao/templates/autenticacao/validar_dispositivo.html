@@ -1,0 +1,52 @@
+{% extends "layout/base.html" %}
+{% from "autenticacao/conta.html" import icone_email %}
+
+{% block title %}Validar Dispositivo | Doce Pedido{% endblock %}
+{% block description %}Confirme este dispositivo para continuar acessando sua conta Doce Pedido.{% endblock %}
+{% block content %}
+    <section class="auth-section conta-area">
+        <div class="conta-card">
+            <header class="conta-cabecalho">
+                <h1>Validar Dispositivo</h1>
+                <p>Enviamos um código de 6 dígitos para {{ email }}.</p>
+            </header>
+
+            <form method="post" class="conta-formulario" novalidate>
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <div class="conta-campo">
+                    <span class="conta-campo-icone">
+                        {{ icone_email() }}
+                    </span>
+                    <span class="conta-campo-conteudo">
+                        <label for="codigo-dispositivo">Código de Acesso</label>
+                        <input
+                            id="codigo-dispositivo"
+                            name="codigo"
+                            type="text"
+                            inputmode="numeric"
+                            autocomplete="one-time-code"
+                            pattern="[0-9]{6}"
+                            maxlength="6"
+                            placeholder="000000"
+                            required
+                            autofocus
+                        >
+                    </span>
+                </div>
+                <p class="conta-mensagem">
+                    O código expira em {{ minutos }} minutos. Após a validação, este dispositivo ficará reconhecido por {{ dias }} dias.
+                </p>
+                <button class="btn btn-primary conta-botao" type="submit">Validar Dispositivo</button>
+            </form>
+
+            <form method="post" action="{{ url_for('seguranca_conta.reenviar_codigo_dispositivo') }}" class="text-center mt-3">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <button type="submit" class="conta-link">Reenviar Código</button>
+            </form>
+
+            <p class="conta-politicas text-center mt-3">
+                O acesso à sua conta ainda não foi liberado. O login será concluído somente após validar este dispositivo.
+            </p>
+        </div>
+    </section>
+{% endblock %}

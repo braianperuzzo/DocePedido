@@ -1,0 +1,26 @@
+{% extends "emails/base_email.html" %}
+
+{% block titulo_oculto %}Confirme seu Cadastro na Doce Pedido{% endblock %}
+{% block titulo %}Confirme seu Cadastro{% endblock %}
+{% block conteudo %}
+    <p>Olá, <strong style="color:#94435f;">{{ nome }}</strong>,</p>
+    <p>
+        Recebemos sua solicitação de cadastro na <strong>Doce Pedido</strong>.
+        Para concluir a criação da sua conta e liberar seu acesso, confirme seu
+        e-mail clicando no botão abaixo.
+    </p>
+    <p style="text-align:center;margin:32px 0;">
+        <a href="{{ link }}" style="background-color:#b85f7d;color:#ffffff;font-weight:bold;padding:14px 28px;border-radius:6px;text-decoration:none;display:inline-block;">
+            Confirmar Minha Conta
+        </a>
+    </p>
+    <p style="text-align:center;font-size:13px;color:#78625e;word-break:break-all;">
+        Se o botão não funcionar, copie e cole este link no navegador:<br>
+        <a href="{{ link }}" style="color:#94435f;">{{ link }}</a>
+    </p>
+    <p style="margin-top:24px;">
+        Após a confirmação, você será direcionado automaticamente para a Doce Pedido
+        já com sua conta conectada.
+    </p>
+    <p>Se você não realizou este cadastro, pode ignorar este e-mail.</p>
+{% endblock %}

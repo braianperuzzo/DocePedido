@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+Disallow: /login
+Disallow: /cadastro
+Disallow: /logout
+Disallow: /carrinho
+Disallow: /pedidos
+
+Sitemap: {{ sitemap_url }}

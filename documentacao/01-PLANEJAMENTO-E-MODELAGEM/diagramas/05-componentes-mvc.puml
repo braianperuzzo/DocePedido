@@ -1,0 +1,28 @@
+@startuml
+skinparam componentStyle rectangle
+
+actor Usuário
+
+package "Doce Pedido" {
+  component "Templates Jinja\n(View)" as View
+  component "Controladores / Blueprints\n(Controller)" as Controller
+  component "Serviços" as Services
+  component "Modelos SQLAlchemy\n(Model)" as Model
+  component "Recursos estáticos\nCSS / JS / PWA" as Static
+}
+
+database "SQLite" as DB
+cloud "SMTP" as SMTP
+cloud "Serviços públicos\nCEP / UF / municípios" as External
+
+Usuário --> View : HTTP / interação
+View --> Controller : formulários e requisições
+View --> Static : carrega recursos
+Controller --> Model : consulta / persiste
+Controller --> Services : regras compartilhadas
+Services --> Model : consultas auxiliares
+Model --> DB : ORM
+Services --> SMTP : e-mails
+Services --> External : localização
+Controller --> View : renderiza resposta
+@enduml

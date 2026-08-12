@@ -1,0 +1,86 @@
+{% extends 'layout/base.html' %}
+{% block title %}
+    Pedido nº {{ pedido.id }} | Doce Pedido
+{% endblock %}
+{% block content %}
+    <div class="container section">
+        <a class="back-link" href="{{ url_for('pedidos.listar') }}">
+            ← Voltar aos Pedidos
+        </a>
+        <div class="section-heading">
+            <div>
+                <span class="eyebrow">
+                    Detalhes do Pedido
+                </span>
+                <h1>
+                    Pedido nº {{ pedido.id }}
+                </h1>
+                <p>
+                    {{ pedido.data_pedido.strftime('%d/%m/%Y às %H:%M') }}
+                </p>
+            </div>
+            <span class="status-badge">
+                {{ pedido.status }}
+            </span>
+        </div>
+        <div class="order-items">
+            {% for item in pedido.itens %}
+                {% if item.produto.ativo %}
+                    <a
+                        class="order-item text-reset text-decoration-none"
+                        href="{{ url_for('produtos.detalhes', produto_id=item.produto.id) }}"
+                        aria-label="Abrir {{ item.produto.nome }}"
+                    >
+                        {% if imagem_produto_existe(item.produto.imagem) %}
+                            <img
+                                loading="lazy"
+                                decoding="async"
+                                src="{{ url_for('static', filename=item.produto.imagem) }}"
+                                alt="{{ item.produto.nome }}"
+                            >
+                        {% else %}
+                            <span class="image-placeholder" aria-hidden="true">
+                                Doce Pedido
+                            </span>
+                        {% endif %}
+                        <div>
+                            <strong>{{ item.produto.nome }}</strong>
+                            <small>{{ item.quantidade }} × {{ item.valor_unitario|moeda }}</small>
+                        </div>
+                        <strong>{{ item.subtotal|moeda }}</strong>
+                    </a>
+                {% else %}
+                    <div class="order-item">
+                        {% if imagem_produto_existe(item.produto.imagem) %}
+                            <img
+                                loading="lazy"
+                                decoding="async"
+                                src="{{ url_for('static', filename=item.produto.imagem) }}"
+                                alt="{{ item.produto.nome }}"
+                            >
+                        {% else %}
+                            <span class="image-placeholder" aria-hidden="true">
+                                Doce Pedido
+                            </span>
+                        {% endif %}
+                        <div>
+                            <strong>{{ item.produto.nome }}</strong>
+                            <small>{{ item.quantidade }} × {{ item.valor_unitario|moeda }} · Indisponível</small>
+                        </div>
+                        <strong>{{ item.subtotal|moeda }}</strong>
+                    </div>
+                {% endif %}
+            {% endfor %}
+            {% if pedido.detalhes_checkout and pedido.detalhes_checkout.valor_desconto > 0 %}
+                <div class="order-total">
+                    <span>Desconto · {{ pedido.detalhes_checkout.cupom_codigo }}</span>
+                    <strong>-{{ pedido.detalhes_checkout.valor_desconto|moeda }}</strong>
+                </div>
+            {% endif %}
+            <div class="order-total">
+                <span>Total do Pedido</span>
+                <strong>{{ pedido.valor_total|moeda }}</strong>
+            </div>
+        </div>
+    </div>
+{% endblock %}

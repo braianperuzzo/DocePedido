@@ -1,0 +1,88 @@
+{% extends 'layout/base.html' %}
+
+{% block title %}Pedido Confirmado | Doce Pedido{% endblock %}
+{% block description %}Confirmação e resumo do pedido realizado na Doce Pedido.{% endblock %}
+
+{% block structured_data %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/checkout.css') }}">
+{% endblock %}
+
+{% block body_attributes %}
+    data-analytics-event="order_created"
+    data-analytics-value="{{ pedido.valor_total }}"
+    data-analytics-item-count="{{ pedido.itens|sum(attribute='quantidade') }}"
+{% endblock %}
+
+{% block content %}
+    <section class="container section order-confirmation-page">
+        <div class="order-confirmation-card">
+            <span class="order-confirmation-icon" aria-hidden="true">✓</span>
+            <span class="eyebrow">Pedido Confirmado</span>
+            <h1>Pedido Recebido</h1>
+            <p class="order-confirmation-lead">
+                Seu pedido nº {{ pedido.id }} foi registrado. Você pode acompanhar os detalhes em Meus Pedidos.
+            </p>
+
+            <div class="order-confirmation-details">
+                <div>
+                    <small>Situação</small>
+                    <strong>{{ pedido.status }}</strong>
+                </div>
+                <div>
+                    <small>Total</small>
+                    <strong>{{ pedido.valor_total|moeda }}</strong>
+                </div>
+                {% if pedido.detalhes_checkout and pedido.detalhes_checkout.valor_desconto > 0 %}
+                    <div>
+                        <small>Cupom</small>
+                        <strong>{{ pedido.detalhes_checkout.cupom_codigo }} · -{{ pedido.detalhes_checkout.valor_desconto|moeda }}</strong>
+                    </div>
+                {% endif %}
+                <div>
+                    <small>Recebimento</small>
+                    <strong>
+                        {% if pedido.detalhes_checkout %}
+                            {{ pedido.detalhes_checkout.tipo_entrega }}
+                        {% else %}
+                            A Confirmar
+                        {% endif %}
+                    </strong>
+                </div>
+                <div>
+                    <small>Pagamento</small>
+                    <strong>
+                        {% if pedido.detalhes_checkout %}
+                            {{ pedido.detalhes_checkout.forma_pagamento }}
+                        {% else %}
+                            Presencial
+                        {% endif %}
+                    </strong>
+                </div>
+                <div>
+                    <small>Frete</small>
+                    <strong>Grátis</strong>
+                </div>
+                <div>
+                    <small>Data</small>
+                    <strong>{{ pedido.data_pedido.strftime('%d/%m/%Y às %H:%M') }}</strong>
+                </div>
+            </div>
+
+            {% if pedido.detalhes_checkout and pedido.detalhes_checkout.endereco_entrega %}
+                <div class="order-confirmation-address">
+                    <strong>Endereço de Entrega</strong>
+                    {{ pedido.detalhes_checkout.endereco_entrega }}
+                </div>
+            {% endif %}
+
+            <div class="order-confirmation-actions">
+                <a class="btn btn-primary" href="{{ url_for('pedidos.listar') }}">
+                    Acompanhar em Meus Pedidos
+                </a>
+                <a class="btn btn-outline-secondary" href="{{ url_for('pedidos.detalhes', pedido_id=pedido.id) }}">
+                    Ver Detalhes
+                </a>
+            </div>
+        </div>
+    </section>
+{% endblock %}

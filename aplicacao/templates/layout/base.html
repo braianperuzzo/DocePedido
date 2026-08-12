@@ -1,0 +1,737 @@
+<!doctype html>
+<html lang="pt-BR">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#b85f7d">
+        <script src="{{ url_for('static', filename='js/tema-inicial.js') }}">
+        </script>
+        {% set titulo_pagina %}
+            {% block title %}
+                Doce Pedido
+            {% endblock %}
+        {% endset %}
+        {% set descricao_pagina %}
+            {% block description %}
+                {{ informacoes_site.descricao }}
+            {% endblock %}
+        {% endset %}
+        {% set canonical_pagina %}
+            {% block canonical %}
+            {% endblock %}
+        {% endset %}
+        {% set imagem_social %}
+            {% block social_image %}
+                {{ url_publica(url_for('static', filename='imagens/logo.png')) }}
+            {% endblock %}
+        {% endset %}
+        <title>
+            {{ titulo_pagina|trim }}
+        </title>
+        <meta name="description" content="{{ descricao_pagina|trim }}">
+        <meta name="robots" content="{% block robots %}noindex, nofollow{% endblock %}">
+        {% if canonical_pagina|trim %}
+            <link rel="canonical" href="{{ canonical_pagina|trim }}">
+        {% endif %}
+        <meta property="og:site_name" content="{{ informacoes_site.nome }}">
+        <meta property="og:title" content="{{ titulo_pagina|trim }}">
+        <meta property="og:description" content="{{ descricao_pagina|trim }}">
+        <meta property="og:type" content="{% block og_type %}website{% endblock %}">
+        <meta property="og:locale" content="{{ informacoes_site.locale }}">
+        {% if canonical_pagina|trim %}
+            <meta property="og:url" content="{{ canonical_pagina|trim }}">
+        {% endif %}
+        <meta property="og:image" content="{{ imagem_social|trim }}">
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:title" content="{{ titulo_pagina|trim }}">
+        <meta name="twitter:description" content="{{ descricao_pagina|trim }}">
+        <meta name="twitter:image" content="{{ imagem_social|trim }}">
+        {% if google_site_verification %}
+            <meta name="google-site-verification" content="{{ google_site_verification }}">
+        {% endif %}
+        {% if bing_site_verification %}
+            <meta name="msvalidate.01" content="{{ bing_site_verification }}">
+        {% endif %}
+        {% if arquivo_estatico_existe('imagens/favicon-32.png') %}
+            <link
+                rel="icon"
+                href="{{ url_for('static', filename='imagens/favicon-32.png') }}"
+                type="image/png"
+                sizes="32x32"
+            >
+        {% endif %}
+        {% if arquivo_estatico_existe('imagens/apple-touch-icon.png') %}
+            <link
+                rel="apple-touch-icon"
+                href="{{ url_for('static', filename='imagens/apple-touch-icon.png') }}"
+                sizes="180x180"
+            >
+        {% endif %}
+        <link rel="manifest" href="{{ url_for('seo.manifesto') }}">
+        <link href="{{ url_for('static', filename='vendor/bootstrap/bootstrap.min.css') }}" rel="stylesheet">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/principal.css') }}">
+        {% block structured_data %}
+        {% endblock %}
+    </head>
+    <body
+        class="d-flex flex-column min-vh-100"
+        data-ga-measurement-id="{{ ga_measurement_id or '' }}"
+        {% block body_attributes %}{% endblock %}
+    >
+        {# Cabeçalho: os dropdowns agrupam navegação institucional e conta sem aumentar a navbar. #}
+        <header class="site-header sticky-top" data-site-header>
+            <nav class="navbar navbar-expand-xl" aria-label="Navegação principal">
+                <div class="container">
+                    <a class="navbar-brand" href="{{ url_for('pagina_inicial.inicio') }}">
+                        {% if arquivo_estatico_existe('imagens/favicon-32.png') %}
+                            <img
+                                class="brand-mark"
+                                src="{{ url_for('static', filename='imagens/favicon-32.png') }}"
+                                width="28"
+                                height="28"
+                                alt=""
+                            >
+                        {% endif %}
+                        <span>
+                            {{ informacoes_site.nome }}
+                        </span>
+                    </a>
+                    <div class="mobile-header-actions">
+                        <a
+                            class="mobile-cart cart-icon-link"
+                            href="{{ url_for('carrinho.visualizar') }}"
+                            aria-label="Abrir carrinho"
+                        >
+                            <svg
+                                class="cart-icon"
+                                width="24"
+                                height="24"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg"
+                                aria-hidden="true"
+                                focusable="false"
+                            >
+                                <path
+                                    d="M6.29977 5H21L19 12H7.37671M20 16H8L6 3H3M9 20C9 20.5523 8.55228 21 8 21C7.44772 21 7 20.5523 7 20C7 19.4477 7.44772 19 8 19C8.55228 19 9 19.4477 9 20ZM20 20C20 20.5523 19.5523 21 19 21C18.4477 21 18 20.5523 18 20C18 19.4477 18.4477 19 19 19C19.5523 19 20 19.4477 20 20Z"
+                                    stroke="currentColor"
+                                    stroke-width="2"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                >
+                                </path>
+                            </svg>
+                            <span class="cart-count" data-cart-count>
+                                {{ quantidade_carrinho }}
+                            </span>
+                        </a>
+                        <button
+                            class="navbar-toggler"
+                            type="button"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#menu"
+                            aria-controls="menu"
+                            aria-expanded="false"
+                            aria-label="Abrir menu"
+                        >
+                            <span class="navbar-toggler-icon">
+                            </span>
+                        </button>
+                    </div>
+                    <div class="collapse navbar-collapse" id="menu">
+                        <ul class="navbar-nav ms-auto align-items-xl-center gap-xl-1">
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ url_for('pagina_inicial.inicio') }}">
+                                    Início
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ url_for('produtos.catalogo') }}">
+                                    Produtos
+                                </a>
+                            </li>
+                            <li class="nav-item header-dropdown" data-header-dropdown>
+                                <button
+                                    class="nav-link dropdown-trigger"
+                                    type="button"
+                                    aria-expanded="false"
+                                    aria-controls="menu-sobre"
+                                    data-dropdown-trigger
+                                >
+                                    Sobre
+                                    <span class="dropdown-chevron" aria-hidden="true">
+                                    </span>
+                                </button>
+                                <div
+                                    class="header-dropdown-menu institutional-menu"
+                                    id="menu-sobre"
+                                    data-dropdown-menu
+                                >
+                                    <a href="{{ url_for('institucional.sobre') }}">
+                                        Sobre a Doce Pedido
+                                    </a>
+                                    <a href="{{ url_for('institucional.faq') }}">
+                                        Perguntas Frequentes
+                                    </a>
+                                    <a href="{{ url_for('institucional.entrega') }}">
+                                        Entrega e Retirada
+                                    </a>
+                                    <a href="{{ url_for('institucional.trocas_cancelamentos') }}">
+                                        Trocas e Cancelamentos
+                                    </a>
+                                    <div class="dropdown-separator" role="separator">
+                                    </div>
+                                    <a href="{{ url_for('institucional.privacidade') }}">
+                                        Política de Privacidade
+                                    </a>
+                                    <a href="{{ url_for('institucional.cookies') }}">
+                                        Política de Cookies
+                                    </a>
+                                    <a href="{{ url_for('institucional.termos') }}">
+                                        Termos de Uso
+                                    </a>
+                                    <a href="{{ url_for('institucional.seguranca') }}">
+                                        Segurança
+                                    </a>
+                                </div>
+                            </li>
+                            <li class="nav-item">
+                                <a
+                                    class="nav-link cart-link cart-icon-link desktop-cart"
+                                    href="{{ url_for('carrinho.visualizar') }}"
+                                    aria-label="Abrir carrinho"
+                                >
+                                    <svg
+                                        class="cart-icon"
+                                        width="24"
+                                        height="24"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        aria-hidden="true"
+                                        focusable="false"
+                                    >
+                                        <path
+                                            d="M6.29977 5H21L19 12H7.37671M20 16H8L6 3H3M9 20C9 20.5523 8.55228 21 8 21C7.44772 21 7 20.5523 7 20C7 19.4477 7.44772 19 8 19C8.55228 19 9 19.4477 9 20ZM20 20C20 20.5523 19.5523 21 19 21C18.4477 21 18 20.5523 18 20C18 19.4477 18.4477 19 19 19C19.5523 19 20 19.4477 20 20Z"
+                                            stroke="currentColor"
+                                            stroke-width="2"
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                        >
+                                        </path>
+                                    </svg>
+                                    <span class="visually-hidden">
+                                        Carrinho
+                                    </span>
+                                    <span class="cart-count" data-cart-count>
+                                        {{ quantidade_carrinho }}
+                                    </span>
+                                </a>
+                            </li>
+                            <li class="nav-item theme-nav-item">
+                                <button
+                                    class="theme-toggle"
+                                    type="button"
+                                    data-theme-toggle
+                                    aria-label="Modo Escuro"
+                                    title="Modo Escuro"
+                                >
+                                    <span class="theme-icon-stack" aria-hidden="true">
+                                        <svg
+                                            class="theme-icon theme-icon-sun"
+                                            width="22"
+                                            height="22"
+                                            viewBox="0 0 24 24"
+                                            fill="none"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            focusable="false"
+                                        >
+                                            <path
+                                                d="M12 3V4M12 20V21M4 12H3M6.31412 6.31412L5.5 5.5M17.6859 6.31412L18.5 5.5M6.31412 17.69L5.5 18.5001M17.6859 17.69L18.5 18.5001M21 12H20M16 12C16 14.2091 14.2091 16 12 16C9.79086 16 8 14.2091 8 12C8 9.79086 9.79086 8 12 8C14.2091 8 16 9.79086 16 12Z"
+                                                stroke="currentColor"
+                                                stroke-width="2"
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                            >
+                                            </path>
+                                        </svg>
+                                        <svg
+                                            class="theme-icon theme-icon-moon"
+                                            width="22"
+                                            height="22"
+                                            viewBox="0 0 24 24"
+                                            fill="none"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            focusable="false"
+                                        >
+                                            <path
+                                                d="M3.32031 11.6835C3.32031 16.6541 7.34975 20.6835 12.3203 20.6835C16.1075 20.6835 19.3483 18.3443 20.6768 15.032C19.6402 15.4486 18.5059 15.6834 17.3203 15.6834C12.3497 15.6834 8.32031 11.654 8.32031 6.68342C8.32031 5.50338 8.55165 4.36259 8.96453 3.32996C5.65605 4.66028 3.32031 7.89912 3.32031 11.6835Z"
+                                                stroke="currentColor"
+                                                stroke-width="2"
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                            >
+                                            </path>
+                                        </svg>
+                                    </span>
+                                    <span class="theme-label">
+                                        Tema
+                                    </span>
+                                </button>
+                            </li>
+                            <li class="nav-item header-dropdown account-dropdown" data-header-dropdown>
+                                <button
+                                    class="nav-link dropdown-trigger"
+                                    type="button"
+                                    aria-expanded="false"
+                                    aria-controls="menu-conta"
+                                    data-dropdown-trigger
+                                >
+                                    Minha Conta
+                                    <span class="dropdown-chevron" aria-hidden="true">
+                                    </span>
+                                </button>
+                                <div class="header-dropdown-menu" id="menu-conta" data-dropdown-menu>
+                                    {% if current_user.is_authenticated %}
+                                        <span class="account-name">
+                                            Olá, {{ current_user.nome }}
+                                        </span>
+                                        <a href="{{ url_for('pedidos.listar') }}">
+                                            Meus Pedidos
+                                        </a>
+                                        <form method="post" action="{{ url_for('autenticacao.logout') }}">
+                                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                            <button type="submit">
+                                                Sair
+                                            </button>
+                                        </form>
+                                    {% else %}
+                                        <a href="{{ url_for('autenticacao.login') }}">
+                                            Entrar
+                                        </a>
+                                        <a href="{{ url_for('autenticacao.cadastro') }}">
+                                            Criar Conta
+                                        </a>
+                                    {% endif %}
+                                </div>
+                            </li>
+                            {# A busca cresce no fluxo do cabeçalho e mantém a consulta ao backend existente. #}
+                            <li class="nav-item search-nav-item">
+                                <form
+                                    class="header-search"
+                                    action="{{ url_for('produtos.buscar') }}"
+                                    method="get"
+                                    role="search"
+                                    data-header-search
+                                >
+                                    <button
+                                        class="search-toggle"
+                                        type="button"
+                                        aria-label="Buscar Cupcakes"
+                                        aria-expanded="false"
+                                        aria-controls="busca-cabecalho"
+                                        data-search-toggle
+                                    >
+                                        <svg
+                                            width="20"
+                                            height="20"
+                                            viewBox="0 0 24 24"
+                                            fill="none"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            aria-hidden="true"
+                                            focusable="false"
+                                        >
+                                            <path
+                                                d="M15.7955 15.8111L21 21M18 10.5C18 14.6421 14.6421 18 10.5 18C6.35786 18 3 14.6421 3 10.5C3 6.35786 6.35786 3 10.5 3C14.6421 3 18 6.35786 18 10.5Z"
+                                                stroke="currentColor"
+                                                stroke-width="2"
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                            >
+                                            </path>
+                                        </svg>
+                                    </button>
+                                    <label class="visually-hidden" for="busca-cabecalho">
+                                        Buscar Cupcakes
+                                    </label>
+                                    <input
+                                        id="busca-cabecalho"
+                                        name="q"
+                                        type="search"
+                                        maxlength="100"
+                                        placeholder="Buscar Cupcakes"
+                                        aria-label="Buscar Cupcakes"
+                                        required
+                                    >
+                                    <button class="visually-hidden-focusable" type="submit">
+                                        Buscar
+                                    </button>
+                                </form>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </header>
+        <main class="flex-grow-1">
+            <div class="container flash-area">
+                {% for category, message in get_flashed_messages(with_categories=true) %}
+                    <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fechar">
+                        </button>
+                    </div>
+                {% endfor %}
+            </div>
+            {% block content %}
+            {% endblock %}
+        </main>
+        <footer class="site-footer mt-5">
+            <div class="container footer-main">
+                <div class="footer-grid">
+                    <div>
+                        <h2 class="footer-brand">
+                            {{ informacoes_site.nome }}
+                        </h2>
+                        <p>
+                            Cupcakes artesanais para diferentes momentos.
+                        </p>
+                        {% if informacoes_site.redes.facebook or informacoes_site.redes.instagram or informacoes_site.redes.tiktok %}
+                            <h3 class="social-title">
+                                Siga a Doce Pedido
+                            </h3>
+                            <div class="social-links">
+                                {% if informacoes_site.redes.facebook %}
+                                    <a
+                                        href="{{ informacoes_site.redes.facebook }}"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        aria-label="Facebook"
+                                        title="Facebook"
+                                    >
+                                        <svg
+                                            width="20"
+                                            height="20"
+                                            viewBox="0 0 24 24"
+                                            fill="none"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            aria-hidden="true"
+                                            focusable="false"
+                                        >
+                                            <path
+                                                fill-rule="evenodd"
+                                                clip-rule="evenodd"
+                                                d="M20 1C21.6569 1 23 2.34315 23 4V20C23 21.6569 21.6569 23 20 23H4C2.34315 23 1 21.6569 1 20V4C1 2.34315 2.34315 1 4 1H20ZM20 3C20.5523 3 21 3.44772 21 4V20C21 20.5523 20.5523 21 20 21H15V13.9999H17.0762C17.5066 13.9999 17.8887 13.7245 18.0249 13.3161L18.4679 11.9871C18.6298 11.5014 18.2683 10.9999 17.7564 10.9999H15V8.99992C15 8.49992 15.5 7.99992 16 7.99992H18C18.5523 7.99992 19 7.5522 19 6.99992V6.31393C19 5.99091 18.7937 5.7013 18.4813 5.61887C17.1705 5.27295 16 5.27295 16 5.27295C13.5 5.27295 12 6.99992 12 8.49992V10.9999H10C9.44772 10.9999 9 11.4476 9 11.9999V12.9999C9 13.5522 9.44771 13.9999 10 13.9999H12V21H4C3.44772 21 3 20.5523 3 20V4C3 3.44772 3.44772 3 4 3H20Z"
+                                                fill="currentColor"
+                                            >
+                                            </path>
+                                        </svg>
+                                    </a>
+                                {% endif %}
+                                {% if informacoes_site.redes.instagram %}
+                                    <a
+                                        href="{{ informacoes_site.redes.instagram }}"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        aria-label="Instagram"
+                                        title="Instagram"
+                                    >
+                                        <svg
+                                            width="20"
+                                            height="20"
+                                            viewBox="0 0 24 24"
+                                            fill="none"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            aria-hidden="true"
+                                            focusable="false"
+                                        >
+                                            <path
+                                                fill-rule="evenodd"
+                                                clip-rule="evenodd"
+                                                d="M12 18C15.3137 18 18 15.3137 18 12C18 8.68629 15.3137 6 12 6C8.68629 6 6 8.68629 6 12C6 15.3137 8.68629 18 12 18ZM12 16C14.2091 16 16 14.2091 16 12C16 9.79086 14.2091 8 12 8C9.79086 8 8 9.79086 8 12C8 14.2091 9.79086 16 12 16Z"
+                                                fill="currentColor"
+                                            >
+                                            </path>
+                                            <path
+                                                d="M18 5C17.4477 5 17 5.44772 17 6C17 6.55228 17.4477 7 18 7C18.5523 7 19 6.55228 19 6C19 5.44772 18.5523 5 18 5Z"
+                                                fill="currentColor"
+                                            >
+                                            </path>
+                                            <path
+                                                fill-rule="evenodd"
+                                                clip-rule="evenodd"
+                                                d="M1.65396 4.27606C1 5.55953 1 7.23969 1 10.6V13.4C1 16.7603 1 18.4405 1.65396 19.7239C2.2292 20.8529 3.14708 21.7708 4.27606 22.346C5.55953 23 7.23969 23 10.6 23H13.4C16.7603 23 18.4405 23 19.7239 22.346C20.8529 21.7708 21.7708 20.8529 22.346 19.7239C23 18.4405 23 16.7603 23 13.4V10.6C23 7.23969 23 5.55953 22.346 4.27606C21.7708 3.14708 20.8529 2.2292 19.7239 1.65396C18.4405 1 16.7603 1 13.4 1H10.6C7.23969 1 5.55953 1 4.27606 1.65396C3.14708 2.2292 2.2292 3.14708 1.65396 4.27606ZM13.4 3H10.6C8.88684 3 7.72225 3.00156 6.82208 3.0751C5.94524 3.14674 5.49684 3.27659 5.18404 3.43597C4.43139 3.81947 3.81947 4.43139 3.43597 5.18404C3.27659 5.49684 3.14674 5.94524 3.0751 6.82208C3.00156 7.72225 3 8.88684 3 10.6V13.4C3 15.1132 3.00156 16.2777 3.0751 17.1779C3.14674 18.0548 3.27659 18.5032 3.43597 18.816C3.81947 19.5686 4.43139 20.1805 5.18404 20.564C5.49684 20.7234 5.94524 20.8533 6.82208 20.9249C7.72225 20.9984 8.88684 21 10.6 21H13.4C15.1132 21 16.2777 20.9984 17.1779 20.9249C18.0548 20.8533 18.5032 20.7234 18.816 20.564C19.5686 20.1805 20.1805 19.5686 20.564 18.816C20.7234 18.5032 20.8533 18.0548 20.9249 17.1779C20.9984 16.2777 21 15.1132 21 13.4V10.6C21 8.88684 20.9984 7.72225 20.9249 6.82208C20.8533 5.94524 20.7234 5.49684 20.564 5.18404C20.1805 4.43139 19.5686 3.81947 18.816 3.43597C18.5032 3.27659 18.0548 3.14674 17.1779 3.0751C16.2777 3.00156 15.1132 3 13.4 3Z"
+                                                fill="currentColor"
+                                            >
+                                            </path>
+                                        </svg>
+                                    </a>
+                                {% endif %}
+                                {% if informacoes_site.redes.tiktok %}
+                                    <a
+                                        href="{{ informacoes_site.redes.tiktok }}"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        aria-label="TikTok"
+                                        title="TikTok"
+                                    >
+                                        <svg
+                                            width="20"
+                                            height="20"
+                                            viewBox="0 0 24 24"
+                                            fill="none"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            aria-hidden="true"
+                                            focusable="false"
+                                        >
+                                            <path
+                                                d="M12.94,1.61V15.78a2.83,2.83,0,0,1-2.83,2.83h0a2.83,2.83,0,0,1-2.83-2.83h0a2.84,2.84,0,0,1,2.83-2.84h0V9.17h0A6.61,6.61,0,0,0,3.5,15.78h0a6.61,6.61,0,0,0,6.61,6.61h0a6.61,6.61,0,0,0,6.61-6.61V9.17l.2.1a8.08,8.08,0,0,0,3.58.84h0V6.33l-.11,0a4.84,4.84,0,0,1-3.67-4.7H12.94Z"
+                                                stroke="currentColor"
+                                                stroke-miterlimit="10"
+                                                stroke-width="1.89"
+                                            >
+                                            </path>
+                                        </svg>
+                                    </a>
+                                {% endif %}
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div>
+                        <h2>
+                            Loja
+                        </h2>
+                        <ul>
+                            <li>
+                                <a href="{{ url_for('pagina_inicial.inicio') }}">
+                                    Início
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ url_for('produtos.catalogo') }}">
+                                    Produtos
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ url_for('carrinho.visualizar') }}">
+                                    Carrinho
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    {% if informacoes_site.horarios or informacoes_site.email or informacoes_site.telefone or informacoes_site.redes.whatsapp %}
+                        <div>
+                            <h2>
+                                Atendimento
+                            </h2>
+                            {% if informacoes_site.horarios %}
+                                <p>
+                                    {{ informacoes_site.horarios }}
+                                </p>
+                            {% endif %}
+                            {% if informacoes_site.email %}
+                                <p>
+                                    <a href="mailto:{{ informacoes_site.email }}">
+                                        {{ informacoes_site.email }}
+                                    </a>
+                                </p>
+                            {% endif %}
+                            {% if informacoes_site.telefone %}
+                                <p>
+                                    <a href="tel:{{ informacoes_site.telefone }}">
+                                        {{ informacoes_site.telefone_exibicao or informacoes_site.telefone }}
+                                    </a>
+                                </p>
+                            {% endif %}
+                            {% if informacoes_site.redes.whatsapp %}
+                                <p>
+                                    <a href="{{ informacoes_site.redes.whatsapp }}" target="_blank" rel="noopener noreferrer">
+                                        WhatsApp
+                                    </a>
+                                </p>
+                            {% endif %}
+                        </div>
+                    {% endif %}
+                    <div>
+                        <h2>
+                            Institucional e Ajuda
+                        </h2>
+                        <ul>
+                            <li>
+                                <a href="{{ url_for('institucional.sobre') }}">
+                                    Sobre a Doce Pedido
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ url_for('institucional.faq') }}">
+                                    Perguntas Frequentes
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ url_for('institucional.entrega') }}">
+                                    Entrega e Retirada
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ url_for('institucional.trocas_cancelamentos') }}">
+                                    Trocas e Cancelamentos
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ url_for('institucional.privacidade') }}">
+                                    Política de Privacidade
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ url_for('institucional.cookies') }}">
+                                    Política de Cookies
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ url_for('institucional.termos') }}">
+                                    Termos de Uso
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ url_for('institucional.seguranca') }}">
+                                    Segurança
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <div class="container">
+                    <span>
+                        © 2026 {{ informacoes_site.nome }}. Todos os direitos reservados. · Desenvolvido por Braian Peruzzo
+                    </span>
+                </div>
+            </div>
+        </footer>
+        <section class="cookie-banner" data-cookie-banner aria-label="Preferências de Cookies" hidden>
+            <div class="cookie-copy">
+                <h2>
+                    Preferências de Cookies
+                </h2>
+                <p>
+                    Usamos cookies essenciais para o funcionamento e a segurança do site. Com sua autorização,
+                    também usamos cookies de análise para entender como a Doce Pedido é utilizada.
+                </p>
+            </div>
+            <div class="cookie-actions">
+                <button class="btn cookie-accept" type="button" data-cookie-accept>
+                    Aceitar
+                </button>
+                <button class="btn cookie-manage" type="button" data-cookie-manage>
+                    Gerenciar preferências
+                </button>
+            </div>
+        </section>
+        {# O diálogo nativo preserva foco, navegação por teclado e fechamento com Escape. #}
+        <dialog
+            class="cookie-dialog"
+            data-cookie-dialog
+            aria-labelledby="cookie-dialog-title"
+            aria-describedby="cookie-dialog-description"
+        >
+            <form method="dialog">
+                <div class="cookie-dialog-header">
+                    <div>
+                        <span class="eyebrow">
+                            Sua Escolha
+                        </span>
+                        <h2 id="cookie-dialog-title">
+                            Preferências de Cookies
+                        </h2>
+                        <p id="cookie-dialog-description">
+                            Escolha quais cookies você permite enquanto utiliza a Doce Pedido.
+                        </p>
+                    </div>
+                    <button class="dialog-close" value="cancel" aria-label="Fechar preferências">
+                        ×
+                    </button>
+                </div>
+                <div class="cookie-option">
+                    <div>
+                        <strong>
+                            Cookies Essenciais
+                        </strong>
+                        <small>
+                            Necessários para o funcionamento e a segurança básica do site.
+                        </small>
+                    </div>
+                    <span class="essential-status">
+                        Sempre ativos
+                    </span>
+                </div>
+                <label class="cookie-option" for="cookie-analytics">
+                    <span>
+                        <strong>
+                            Cookies de Análise
+                        </strong>
+                        <small>
+                            Ajudam a entender como o site é utilizado.
+                        </small>
+                    </span>
+                    <input id="cookie-analytics" type="checkbox" role="switch" data-cookie-analytics>
+                </label>
+                <div class="cookie-dialog-actions">
+                    <button class="btn cookie-dialog-secondary" type="button" data-cookie-reject>
+                        Recusar não essenciais
+                    </button>
+                    <button class="btn cookie-dialog-secondary" type="button" data-cookie-accept-all>
+                        Aceitar todos
+                    </button>
+                    <button class="btn btn-primary" value="default" type="button" data-cookie-save>
+                        Salvar preferências
+                    </button>
+                </div>
+            </form>
+        </dialog>
+        {% if informacoes_site.redes.whatsapp %}
+            <div class="contact-fab-group" aria-label="Canal de atendimento">
+                <a
+                    class="contact-fab whatsapp-fab"
+                    href="{{ informacoes_site.redes.whatsapp }}"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Falar pelo WhatsApp"
+                    title="Falar pelo WhatsApp"
+                >
+                    <svg class="icon" viewBox="0 0 24 24" aria-hidden="true" width="24" height="24">
+                        <path d="M20.5 11.7a8.5 8.5 0 0 1-12.6 7.4L3 20.5l1.3-4.7A8.5 8.5 0 1 1 20.5 11.7Zm-8-6.2a6.2 6.2 0 0 0-5.3 9.4l.3.5-.7 2.1 2.2-.6.5.3a6.2 6.2 0 1 0 3-11.7Zm-3 3.1c.2 0 .3 0 .4.3l.6 1.4c.1.2.1.3 0 .5l-.5.7c-.1.1-.2.3 0 .5.5 1 1.3 1.8 2.3 2.3.2.1.4.1.5-.1l.7-.9c.1-.2.3-.2.5-.1l1.5.7c.2.1.3.2.3.4 0 .5-.2 1.4-.7 1.8-.5.4-1.1.6-1.8.4-1.1-.3-2.5-.8-4-2.1-1.2-1.1-2.1-2.4-2.3-3.5-.2-.8.1-1.7.6-2.2.3-.3.6-.4.9-.4Z">
+                        </path>
+                    </svg>
+                    <span class="visually-hidden">
+                        Falar pelo WhatsApp
+                    </span>
+                </a>
+            </div>
+        {% endif %}
+        <button class="back-to-top" type="button" aria-label="Voltar ao Topo" title="Voltar ao Topo" data-back-to-top>
+            <svg
+                width="20"
+                height="20"
+                viewBox="0 0 20 20"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                aria-hidden="true"
+                focusable="false"
+            >
+                <path
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M10 18V2m0 0l7 7m-7-7L3 9"
+                >
+                </path>
+            </svg>
+        </button>
+        <script defer src="{{ url_for('static', filename='vendor/bootstrap/bootstrap.bundle.min.js') }}">
+        </script>
+        <script defer src="{{ url_for('static', filename='js/principal.js') }}">
+        </script>
+    </body>
+</html>

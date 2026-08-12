@@ -1,0 +1,79 @@
+{% extends 'layout/base.html' %}
+{% block title %}
+    Segurança | Doce Pedido
+{% endblock %}
+{% block description %}
+    Conheça os principais controles aplicados à conta, aos formulários e aos pedidos na Doce Pedido.
+{% endblock %}
+{% block canonical %}
+    {{ url_publica_para('institucional.seguranca') }}
+{% endblock %}
+{% block robots %}index, follow{% endblock %}
+{% block content %}
+    <section class="container section legal-page">
+        <span class="eyebrow">
+            Proteção da Plataforma
+        </span>
+        <h1>
+            Segurança na Doce Pedido
+        </h1>
+        <p class="lead">
+            A aplicação possui controles para proteger credenciais, formulários e áreas privadas do cliente.
+        </p>
+        <div class="trust-grid">
+            <article>
+                <span aria-hidden="true">
+                    ◇
+                </span>
+                <h2>
+                    Senhas Protegidas
+                </h2>
+                <p>
+                    As senhas são armazenadas por hash e não são exibidas pela aplicação.
+                </p>
+            </article>
+            <article>
+                <span aria-hidden="true">
+                    ✓
+                </span>
+                <h2>
+                    Formulários e Acesso
+                </h2>
+                <p>
+                    Alterações passam por validações no servidor, proteção CSRF e controle de acesso às informações privadas.
+                </p>
+            </article>
+            <article>
+                <span aria-hidden="true">
+                    □
+                </span>
+                <h2>
+                    Conta do Cliente
+                </h2>
+                <p>
+                    Recuperação de senha, alterações sensíveis e validação de novos dispositivos usam confirmações enviadas por e-mail.
+                </p>
+            </article>
+            <article>
+                <span aria-hidden="true">
+                    ○
+                </span>
+                <h2>
+                    Ambiente Publicado
+                </h2>
+                <p>
+                    Em produção, a aplicação deve ser publicada por HTTPS e configurada com chaves, cookies seguros e credenciais fora do código.
+                </p>
+            </article>
+        </div>
+        {% if informacoes_site.email %}
+            <p>
+                Para dúvidas sobre segurança, entre em contato pelo e-mail
+                <a href="mailto:{{ informacoes_site.email }}">
+                    {{ informacoes_site.email }}
+                </a>
+                .
+            </p>
+        {% endif %}
+    </section>
+{% endblock %}

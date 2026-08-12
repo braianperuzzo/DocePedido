@@ -1,0 +1,57 @@
+# Variáveis de ambiente e credenciais
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Ambientes virtuais
+.venv/
+venv/
+env/
+ENV/
+
+# Python e artefatos de build
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+build/
+dist/
+
+# Banco de dados e dados locais
+instance/
+*.db
+*.sqlite
+*.sqlite3
+
+# Testes, cobertura e caches
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.cache/
+.coverage
+.coverage.*
+coverage.xml
+htmlcov/
+playwright-report/
+test-results/
+
+# Arquivos locais do projeto
+execucao.txt
+.cache-guia-pit/
+*.log
+
+# Configurações locais que não fazem parte do projeto
+.devcontainer/
+.codespaces/
+.github/workflows/
+.github/actions/
+*.code-workspace
+
+# IDEs e sistema operacional
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+Desktop.ini

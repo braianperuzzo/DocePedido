@@ -1,0 +1,90 @@
+{% extends 'emails/base_email.html' %}
+
+{% block titulo_oculto %}Pedido confirmado{% endblock %}
+{% block titulo %}Seu pedido foi confirmado{% endblock %}
+
+{% block conteudo %}
+    <p>Olá, {{ pedido.cliente.nome }}.</p>
+    <p>
+        Recebemos seu pedido <strong>nº {{ pedido.id }}</strong>. Abaixo estão os dados registrados para você conferir.
+    </p>
+
+    <div style="margin:22px 0;padding:16px;border:1px solid #e8dcd1;border-radius:8px;background-color:#fff8f0;">
+        <p style="margin:0 0 4px;color:#78625e;font-size:12px;text-transform:uppercase;letter-spacing:.04em;">Situação</p>
+        <p style="margin:0;font-size:16px;font-weight:bold;color:#463534;">{{ pedido.status }}</p>
+    </div>
+
+    <table role="presentation" style="width:100%;border-collapse:collapse;margin:22px 0;">
+        <tbody>
+            {% for item in pedido.itens %}
+                <tr>
+                    <td style="padding:10px 0;border-bottom:1px solid #e8dcd1;vertical-align:top;">
+                        <strong>{{ item.produto.nome }}</strong><br>
+                        <span style="color:#78625e;font-size:13px;">
+                            {{ item.quantidade }} × {{ item.valor_unitario|moeda }}
+                        </span>
+                    </td>
+                    <td style="padding:10px 0;border-bottom:1px solid #e8dcd1;text-align:right;vertical-align:top;font-weight:bold;">
+                        {{ item.subtotal|moeda }}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    {% if detalhes %}
+        {% set subtotal_pedido = pedido.valor_total + detalhes.valor_desconto %}
+    {% else %}
+        {% set subtotal_pedido = pedido.valor_total %}
+    {% endif %}
+
+    <table role="presentation" style="width:100%;border-collapse:collapse;margin:0 0 22px;">
+        <tbody>
+            <tr>
+                <td style="padding:5px 0;color:#78625e;">Subtotal</td>
+                <td style="padding:5px 0;text-align:right;font-weight:bold;">
+                    {{ subtotal_pedido|moeda }}
+                </td>
+            </tr>
+            {% if detalhes and detalhes.valor_desconto > 0 %}
+                <tr>
+                    <td style="padding:5px 0;color:#78625e;">Desconto · {{ detalhes.cupom_codigo }}</td>
+                    <td style="padding:5px 0;text-align:right;font-weight:bold;">-{{ detalhes.valor_desconto|moeda }}</td>
+                </tr>
+            {% endif %}
+            <tr>
+                <td style="padding:5px 0;color:#78625e;">Frete</td>
+                <td style="padding:5px 0;text-align:right;font-weight:bold;color:#4f755d;">Grátis</td>
+            </tr>
+            <tr>
+                <td style="padding:10px 0 0;border-top:1px solid #e8dcd1;font-size:17px;font-weight:bold;">Total</td>
+                <td style="padding:10px 0 0;border-top:1px solid #e8dcd1;text-align:right;font-size:17px;font-weight:bold;">
+                    {{ pedido.valor_total|moeda }}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    {% if detalhes %}
+        <div style="margin:22px 0;padding:16px;border:1px solid #e8dcd1;border-radius:8px;background-color:#ffffff;">
+            <p style="margin:0 0 8px;"><strong>Recebimento:</strong> {{ detalhes.tipo_entrega }}</p>
+            <p style="margin:0 0 8px;"><strong>Pagamento:</strong> {{ detalhes.forma_pagamento }}</p>
+            {% if detalhes.endereco_entrega %}
+                <p style="margin:12px 0 4px;color:#78625e;font-size:12px;text-transform:uppercase;letter-spacing:.04em;">Endereço de entrega</p>
+                <p style="margin:0;white-space:pre-line;">{{ detalhes.endereco_entrega }}</p>
+            {% endif %}
+        </div>
+    {% endif %}
+
+    <p style="margin:26px 0;text-align:center;">
+        <a
+            href="{{ link_pedido }}"
+            style="display:inline-block;padding:12px 22px;border-radius:8px;background-color:#b85f7d;color:#ffffff;text-decoration:none;font-weight:bold;"
+        >
+            Acompanhar pedido
+        </a>
+    </p>
+    <p style="margin-bottom:0;color:#78625e;font-size:13px;">
+        Este e-mail confirma o registro do pedido. A situação atualizada também fica disponível em Meus pedidos.
+    </p>
+{% endblock %}

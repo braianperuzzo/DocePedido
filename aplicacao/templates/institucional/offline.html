@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="pt-BR">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#b85f7d">
+        <meta name="description" content="Página de conexão indisponível da Doce Pedido.">
+        <meta name="robots" content="noindex, nofollow">
+        <title>
+            Sem Conexão | Doce Pedido
+        </title>
+        <link
+            rel="icon"
+            type="image/png"
+            sizes="32x32"
+            href="{{ url_for('static', filename='imagens/favicon-32.png') }}"
+        >
+        <link
+            rel="apple-touch-icon"
+            sizes="180x180"
+            href="{{ url_for('static', filename='imagens/apple-touch-icon.png') }}"
+        >
+        <link rel="manifest" href="{{ url_for('seo.manifesto') }}">
+        {# Aplica o tema antes da pintura para evitar uma troca visual brusca. #}
+        <script src="{{ url_for('static', filename='js/tema-inicial.js') }}">
+        </script>
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/principal.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/offline.css') }}">
+    </head>
+    <body class="offline-body">
+        <main class="offline-page" aria-labelledby="offline-title">
+            <div class="offline-brand">
+                <img src="{{ url_for('static', filename='imagens/favicon-32.png') }}" width="28" height="28" alt="">
+                <span>
+                    Doce Pedido
+                </span>
+            </div>
+            <div class="offline-visual" aria-hidden="true">
+                <span class="offline-signal-ring">
+                </span>
+                <span class="offline-signal-core">
+                    <svg
+                        class="offline-wifi"
+                        width="48"
+                        height="48"
+                        viewBox="0 0 16 16"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                        focusable="false"
+                    >
+                        <path
+                            d="M0 7L1.17157 5.82843C2.98259 4.01741 5.43884 3 8 3C10.5612 3 13.0174 4.01742 14.8284 5.82843L16 7L14.5858 8.41421L13.4142 7.24264C11.9783 5.8067 10.0307 5 8 5C5.96928 5 4.02173 5.8067 2.58579 7.24264L1.41421 8.41421L0 7Z"
+                            fill="currentColor"
+                        />
+                        <path
+                            d="M4.24264 11.2426L2.82843 9.82843L4 8.65685C5.06086 7.59599 6.49971 7 8 7C9.50029 7 10.9391 7.59599 12 8.65686L13.1716 9.82843L11.7574 11.2426L10.5858 10.0711C9.89999 9.38527 8.96986 9 8 9C7.03014 9 6.1 9.38527 5.41421 10.0711L4.24264 11.2426Z"
+                            fill="currentColor"
+                        />
+                        <path
+                            d="M8 15L5.65685 12.6569L6.82842 11.4853C7.13914 11.1746 7.56057 11 8 11C8.43942 11 8.86085 11.1746 9.17157 11.4853L10.3431 12.6569L8 15Z"
+                            fill="currentColor"
+                        />
+                    </svg>
+                </span>
+            </div>
+            <h1 id="offline-title">
+                Sem Conexão
+            </h1>
+            <p class="offline-description">
+                Não foi Possível acessar a Doce Pedido. Quando a conexão voltar,
+                esta página tentará se atualizar automaticamente.
+            </p>
+            <button class="btn btn-primary offline-retry" type="button" data-retry>
+                <svg
+                    class="offline-retry-icon"
+                    width="19"
+                    height="19"
+                    viewBox="0 0 1000 1000"
+                    xmlns="http://www.w3.org/2000/svg"
+                    aria-hidden="true"
+                    focusable="false"
+                >
+                    <path
+                        fill="currentColor"
+                        d="M493.556 -.063c-265.602 0 -482.306 209.741 -493.5 472.594 -.765 18.027 13 19.031 13 19.031l83.813 0c16.291 0 19.146 -9.297 19.531 -17.625 9.228 -199.317 175.315 -357.688 377.156 -357.688 107.739 0 204.915 45.163 273.719 117.563l-58.813 56.875c-10.23 12.319 -10.043 27.275 5.063 31.5l247.125 49.75c21.15 5.281 46.288 -10.747 37.656 -43.656l-58.375 -227.563c-1.482 -8.615 -15.924 -22.024 -29.406 -12.406l-64.094 60.031c-89.659 -91.567 -214.627 -148.406 -352.875 -148.406zm409.625 508.5c-16.291 0 -19.146 9.297 -19.531 17.625 -9.228 199.317 -175.315 357.688 -377.156 357.688 -107.739 0 -204.915 -45.132 -273.719 -117.531l58.813 -56.906c10.229 -12.319 10.043 -27.275 -5.063 -31.5l-247.125 -49.75c-21.15 -5.281 -46.288 10.747 -37.656 43.656l58.375 227.563c1.482 8.615 15.924 22.024 29.406 12.406l64.094 -60.031c89.659 91.567 214.627 148.406 352.875 148.406 265.602 0 482.306 -209.741 493.5 -472.594 .765 -18.027 -13 -19.031 -13 -19.031l-83.813 0z"
+                    />
+                </svg>
+                <span data-retry-label>
+                    Tentar Novamente
+                </span>
+            </button>
+            <p class="offline-status" role="status" aria-live="polite">
+                <span class="offline-status-dot" aria-hidden="true">
+                </span>
+                <span data-connection-status>
+                    Aguardando Conexão
+                </span>
+            </p>
+        </main>
+        <script src="{{ url_for('static', filename='js/offline.js') }}">
+        </script>
+    </body>
+</html>

@@ -1,0 +1,53 @@
+{% extends "layout/base.html" %}
+{% from "autenticacao/conta.html" import campo %}
+
+{% block title %}Redefinir Senha | Doce Pedido{% endblock %}
+{% block description %}Crie uma nova senha para voltar a acessar sua conta Doce Pedido.{% endblock %}
+
+{% block content %}
+    <section class="auth-section conta-area">
+        <div class="conta-card">
+            <header class="conta-cabecalho">
+                <h1>Redefinir Senha</h1>
+                {% if estado_token == "valido" %}
+                    <p>Crie uma nova senha para acessar sua conta.</p>
+                {% elif estado_token == "expirado" %}
+                    <p>Este link de redefinição expirou.</p>
+                {% else %}
+                    <p>Este link de redefinição não é válido.</p>
+                {% endif %}
+            </header>
+
+            {% if estado_token == "valido" %}
+                <form method="post" class="conta-formulario" novalidate>
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    {{ campo('cadastro-senha', 'senha', 'Nova Senha', 'password', 'new-password', icone='senha', descricao='criterios-senha', placeholder='Crie uma Senha') }}
+                    <div id="criterios-senha" class="conta-criterios" aria-live="polite" data-password-criteria>
+                        <strong>A senha deve conter:</strong>
+                        <ul>
+                            <li data-password-rule="length">✕ Mínimo de 8 caracteres</li>
+                            <li data-password-rule="upper">✕ Uma letra maiúscula</li>
+                            <li data-password-rule="lower">✕ Uma letra minúscula</li>
+                            <li data-password-rule="number">✕ Um número</li>
+                            <li data-password-rule="special">✕ Um caractere especial</li>
+                        </ul>
+                    </div>
+                    {{ campo('cadastro-confirmacao', 'confirmacao_senha', 'Repita a Senha', 'password', 'new-password', icone='senha', descricao='confirmacao-mensagem', placeholder='Repita sua Senha') }}
+                    <p id="confirmacao-mensagem" class="conta-mensagem" aria-live="polite"></p>
+                    <button class="btn btn-primary conta-botao" type="submit">Redefinir Senha</button>
+                </form>
+            {% else %}
+                <div class="conta-recuperacao text-center">
+                    <p>
+                        {% if estado_token == "expirado" %}
+                            Solicite um novo link para continuar.
+                        {% else %}
+                            Volte para Minha Conta e solicite uma nova redefinição.
+                        {% endif %}
+                    </p>
+                    <a class="btn btn-primary conta-botao" href="{{ url_for('autenticacao.login') }}">Voltar para Minha Conta</a>
+                </div>
+            {% endif %}
+        </div>
+    </section>
+{% endblock %}

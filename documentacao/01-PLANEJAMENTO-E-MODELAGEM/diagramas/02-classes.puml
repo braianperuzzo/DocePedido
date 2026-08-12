@@ -1,0 +1,129 @@
+@startuml
+hide circle
+skinparam classAttributeIconSize 0
+
+class Cliente {
+  +id: Integer
+  +nome: String
+  +email: String
+  +cpf: String
+  +senha_hash: String
+  +telefone: String
+  +ativo: Boolean
+  +data_cadastro: DateTime
+  +definir_senha(senha): void
+  +verificar_senha(senha): Boolean
+  +is_active: Boolean
+}
+
+class Categoria {
+  +id: Integer
+  +nome: String
+  +descricao: Text
+  +ativo: Boolean
+}
+
+class Produto {
+  +id: Integer
+  +categoria_id: Integer
+  +nome: String
+  +descricao: Text
+  +preco: Numeric
+  +estoque: Integer
+  +ativo: Boolean
+  +imagem: String
+  +preco_formatado: String
+}
+
+class Endereco {
+  +id: Integer
+  +cliente_id: Integer
+  +nome: String
+  +cep: String
+  +logradouro: String
+  +numero: String
+  +complemento: String
+  +bairro: String
+  +cidade: String
+  +uf: String
+  +referencia: String
+  +principal: Boolean
+  +criado_em: DateTime
+  +cep_formatado: String
+}
+
+class Favorito {
+  +id: Integer
+  +cliente_id: Integer
+  +produto_id: Integer
+  +criado_em: DateTime
+}
+
+class Pedido {
+  +id: Integer
+  +cliente_id: Integer
+  +data_pedido: DateTime
+  +status: String
+  +valor_total: Numeric
+}
+
+class ItemPedido {
+  +id: Integer
+  +pedido_id: Integer
+  +produto_id: Integer
+  +quantidade: Integer
+  +valor_unitario: Numeric
+  +subtotal: Numeric
+}
+
+class DetalhePedido {
+  +id: Integer
+  +pedido_id: Integer
+  +tipo_entrega: String
+  +forma_pagamento: String
+  +valor_frete: Numeric
+  +cupom_codigo: String
+  +valor_desconto: Numeric
+  +endereco_entrega: Text
+}
+
+class AlteracaoConta {
+  +id: Integer
+  +cliente_id: Integer
+  +tipo: String
+  +token_hash: String
+  +senha_fingerprint: String
+  +dados_json: Text
+  +senha_hash_nova: String
+  +criado_em: DateTime
+  +expira_em: DateTime
+  +concluida_em: DateTime
+}
+
+class SegurancaConta {
+  +cliente_id: Integer
+  +senha_alterada_em: DateTime
+  +senha_fingerprint: String
+}
+
+class DispositivoConfiavel {
+  +id: Integer
+  +cliente_id: Integer
+  +token_hash: String
+  +user_agent: String
+  +criado_em: DateTime
+  +expira_em: DateTime
+}
+
+Categoria "1" -- "0..*" Produto : agrupa >
+Cliente "1" -- "0..*" Endereco : possui >
+Cliente "1" -- "0..*" Favorito : marca >
+Produto "1" -- "0..*" Favorito : é marcado em >
+Cliente "1" -- "0..*" Pedido : realiza >
+Pedido "1" *-- "1..*" ItemPedido : contém >
+Produto "1" -- "0..*" ItemPedido : referencia >
+Pedido "1" *-- "0..1" DetalhePedido : registra >
+Cliente "1" -- "0..*" AlteracaoConta : solicita >
+Cliente "1" *-- "0..1" SegurancaConta : possui >
+Cliente "1" -- "0..*" DispositivoConfiavel : aprova >
+@enduml
